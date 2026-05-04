@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Gravity Fruits</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#110619;
+    --panel:#1c0a2a;
+    --panel2:#14061e;
+    --line:#3d1858;
+    --text:#ffffff;
+    --label:#fff9cd;
+    --muted:#9070b0;
+    --gold:#f5c518;
+    --gold2:#ffe97a;
+    --good:#22c55e;
+    --bad:#ef4444;
+    --warn:#f59e0b;
+    --accent:#a855f7;
+    --accent2:#c084fc;
+  }
+  *{box-sizing:border-box}
+  html,body{
+    width:100%;height:100%;margin:0;overflow:hidden;
+    background:#080010;
+  }
+  body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .wrap{
+    width:910px;
+    height:1672px;
+    flex-shrink:0;
+    padding:24px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    overflow:hidden;
+    position:relative;
+    background:radial-gradient(ellipse 140% 90% at 50% -10%, #2e0a40 0%, #110619 55%);
+    color:var(--text);
+    font:28px/1.45 'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    transform-origin:center center;
+  }
+
+  /* ── Title bar ── */
+  .titlebar{
+    display:flex;
+    align-items:center;
+    padding:16px 28px;
+    flex-shrink:0;
+    background:linear-gradient(135deg,#28083c,#1a0528);
+    border:5px solid var(--line);
+    border-radius:48px;
+    box-shadow:0 4px 32px #1a003a55;
+  }
+  .titlebar h1{
+    margin:0;
+    font-size:44px;
+    font-weight:900;
+    color:var(--gold);
+    text-shadow:0 0 28px #f5c51855;
+    letter-spacing:.5px;
+    line-height:1.3;
+    flex:1;
+  }
+  .info-header-sub{
+    font-size:22px;
+    font-weight:700;
+    color:var(--label);
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    margin-top:4px;
+    opacity:.7;
+  }
+
+  /* ── Arena wrapper ── */
+  .arena-wrap{
+    border-radius:44px;
+    overflow:hidden;
+    border:3px solid #3d1858;
+    box-shadow:0 0 80px #2a0a4055, inset 0 0 120px #08001a60;
+    flex:1;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* HUD strip sits on top of arena */
+  .hud{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+    padding:14px 20px;
+    background:linear-gradient(180deg,#200a30,#180622);
+    border-bottom:2px solid var(--line);
+    flex-shrink:0;
+  }
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 22px;
+    border-radius:40px;
+    border:3px solid var(--line);
+    background:#160424;
+    font-size:28px;
+    color:var(--label);
+    white-space:nowrap;
+    text-transform:uppercase;
+    letter-spacing:1px;
+  }
+  .pill b{ color:#ffffff; font-weight:800; }
+  .pill.p-mult b{ color:var(--gold); text-shadow:0 0 14px #f5c51840; }
+  .pill.p-combo b{ color:var(--accent2); }
+  .pill.p-status b{ color:var(--text); }
+
+  /* Game field */
+  #arena{
+    position:relative;
+    width:100%;
+    flex:1;
+    min-height:0;
+    overflow:hidden;
+    background:linear-gradient(180deg,#09132a 0%,#070e20 100%);
+  }
+
+  /* ── Control panel ── */
+  .controls{
+    background:linear-gradient(180deg,#1e0a2c 0%,#130720 100%);
+    border:5px solid var(--line);
+    border-radius:52px;
+    padding:20px 28px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    box-shadow:0 8px 48px #1a003a50;
+    flex-shrink:0;
+  }
+
+  /* Bet section */
+  .bet-section{ display:flex; flex-direction:column; gap:14px; }
+  .bet-per-spin-label{
+    text-align:center;
+    font-size:30px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:2px;
+    color:var(--label);
+  }
+  /* Preset buttons row */
+  .bet-presets{
+    display:flex;
+    gap:14px;
+  }
+  .btn-preset{
+    flex:1;
+    padding:16px 0;
+    border:5px solid var(--line);
+    border-radius:60px;
+    background:#1e0830;
+    color:var(--label);
+    font-size:38px;
+    font-weight:800;
+    font-family:'Montserrat',sans-serif;
+    cursor:pointer;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    transition:all .15s;
+  }
+  .btn-preset:hover{ background:#2e1244; color:var(--text); border-color:var(--accent); }
+  #betHalf{ font-size:54px; }
+  /* − / amount / + row */
+  .bet-adjuster{
+    display:flex;
+    align-items:center;
+    gap:16px;
+  }
+  .btn-circle-adj{
+    flex-shrink:0;
+    width:96px;
+    height:96px;
+    border-radius:50%;
+    border:5px solid var(--line);
+    background:#1e0830;
+    color:var(--text);
+    font-size:58px;
+    font-weight:900;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:all .15s;
+    line-height:1;
+    font-family:'Montserrat',sans-serif;
+  }
+  .btn-circle-adj:hover{ background:#2e1244; border-color:var(--accent); }
+  .bet-amount-wrap{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    background:#0d0418;
+    border-radius:60px;
+    border:5px solid var(--line);
+    padding:18px 24px;
+    transition:border-color .15s;
+  }
+  .bet-amount-wrap:focus-within{
+    border-color:var(--accent);
+    box-shadow:0 0 0 6px #a855f720;
+  }
+  .bet-currency{ font-size:38px; font-weight:900; color:var(--text); }
+  input#bet{
+    background:transparent;
+    border:none;
+    color:var(--text);
+    font-size:44px;
+    font-family:'Montserrat',sans-serif;
+    font-weight:900;
+    text-align:center;
+    width:0;
+    flex:1;
+    outline:none;
+    -moz-appearance:textfield;
+  }
+  input#bet::-webkit-outer-spin-button,
+  input#bet::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+
+  /* Action row */
+  .action-row{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .btn-start{ width:100%; }
+  .action-sub{
+    display:flex;
+    gap:16px;
+  }
+  .action-sub .btn-ghost{ flex:1; }
+  .action-sub .btn-cash{ flex:2; min-width:unset; }
+  .btn-action{
+    border:0;
+    border-radius:60px;
+    font-weight:900;
+    font-family:'Montserrat',sans-serif;
+    cursor:pointer;
+    transition:all .18s;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    white-space:nowrap;
+  }
+  .btn-action:disabled{
+    opacity:.4;
+    cursor:not-allowed;
+    transform:none !important;
+    box-shadow:none !important;
+  }
+
+  /* Start Round — primary, large */
+  .btn-start{
+    padding:28px 72px;
+    font-size:36px;
+    background:linear-gradient(135deg,#7c3aed,#a855f7);
+    color:#fff;
+    box-shadow:0 8px 40px #7c3aed55, 0 0 0 2px #c084fc30;
+  }
+  .btn-start:hover:not(:disabled){
+    background:linear-gradient(135deg,#8b5cf6,#c084fc);
+    box-shadow:0 12px 56px #a855f770;
+    transform:translateY(-3px);
+  }
+  .btn-start:active:not(:disabled){ transform:translateY(0); }
+
+  /* Cash Out — secondary large */
+  .btn-cash{
+    padding:28px 56px;
+    font-size:32px;
+    background:linear-gradient(135deg,#15803d,#22c55e);
+    color:#052e12;
+    box-shadow:0 8px 36px #22c55e40;
+  }
+  .btn-cash:hover:not(:disabled){
+    background:linear-gradient(135deg,#16a34a,#4ade80);
+    box-shadow:0 12px 48px #22c55e65;
+    transform:translateY(-3px);
+  }
+  .btn-cash:active:not(:disabled){ transform:translateY(0); }
+
+  /* Reset — ghost */
+  .btn-ghost{
+    padding:20px 40px;
+    font-size:32px;
+    font-family:'Montserrat',sans-serif;
+    background:#1e0830;
+    color:var(--label);
+    border:5px solid var(--line);
+    border-radius:60px;
+    font-weight:700;
+    cursor:pointer;
+    transition:all .15s;
+    text-transform:uppercase;
+    letter-spacing:1px;
+  }
+  .btn-ghost:hover{
+    color:var(--text);
+    border-color:var(--accent);
+    background:#2e1244;
+  }
+
+  /* Credit row */
+  .credit-row{
+    display:flex;
+    gap:10px;
+    align-items:center;
+  }
+  .credit-row .pill{ flex:1; justify-content:space-between; }
+  .pill.p-bal b{ color:var(--gold); font-size:44px; }
+  .pill.p-nonce b{ color:var(--gold); font-size:44px; }
+
+  /* ── Provably fair ── */
+  .fair-row{
+    display:flex;
+    flex-direction:row;
+    gap:12px;
+    align-items:center;
+    padding:16px 20px;
+    background:#0c0318;
+    border:5px solid #2a0e40;
+    border-radius:60px;
+    min-width:0;
+    flex-shrink:0;
+  }
+  .fair-pill{
+    padding:12px 20px;
+    border-radius:60px;
+    border:5px solid #2a0e40;
+    background:#130420;
+    font-size:28px;
+    font-weight:700;
+    color:var(--label);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    min-width:0;
+  }
+  .fair-pill b{ color:#ffffff; }
+  .fair-pill-hash{ flex:1; min-width:0; }
+  .fair-mono{
+    font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:26px;
+    color:#7a60a0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    flex:1;
+    min-width:0;
+    text-transform:none;
+    letter-spacing:0;
+  }
+  input.fair-input{
+    background:transparent;
+    border:none;
+    color:#ffffff;
+    font-family:'Montserrat',inherit;
+    font-size:26px;
+    width:160px;
+    outline:none;
+    text-transform:none;
+    letter-spacing:0;
+  }
+  .btn-rotate{
+    flex-shrink:0;
+    width:74px !important;
+    height:74px !important;
+    padding:0 !important;
+    border-radius:50% !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+  }
+  .btn-rotate svg{ width:38px; height:38px; fill:var(--label); display:block; }
+
+  /* ── Info button ── */
+  .btn-info{
+    flex-shrink:0;
+    width:74px;
+    height:74px;
+    border-radius:50%;
+    border:5px solid var(--line);
+    background:#1e0830;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:border-color .15s, box-shadow .15s;
+    box-shadow:0 4px 20px #00000080;
+    padding:0;
+  }
+  .btn-info svg{ width:44px; height:44px; fill:#ffffff; display:block; }
+  .btn-info:hover{ border-color:var(--accent); box-shadow:0 6px 28px #a855f755; }
+
+  /* ── Info overlay (bottom sheet) ── */
+  .info-overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.65);
+    z-index:10000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    backdrop-filter:blur(6px);
+  }
+  .info-overlay.hidden{ display:none; }
+  .info-sheet{
+    width:100%;
+    max-height:80%;
+    overflow-y:auto;
+    background:linear-gradient(180deg,#1e0a2c,#110618);
+    border:3px solid var(--line);
+    border-radius:48px;
+    padding:40px 36px 64px;
+    display:flex;
+    flex-direction:column;
+    gap:36px;
+  }
+  .info-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .info-header-title{
+    font-size:36px;
+    font-weight:900;
+    color:var(--gold);
+    text-transform:uppercase;
+    letter-spacing:2px;
+  }
+  .info-close{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    border:5px solid var(--line);
+    background:#1e0830;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    padding:0;
+  }
+  .info-close svg{ width:36px; height:36px; fill:var(--label); display:block; }
+  .info-section{ display:flex; flex-direction:column; gap:16px; }
+  .info-section-title{
+    font-size:28px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:2px;
+    color:var(--label);
+    opacity:.7;
+  }
+  .info-line{
+    font-size:32px;
+    color:#ffffff;
+    line-height:1.6;
+  }
+  .info-hash{
+    font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:26px;
+    color:#7a60a0;
+    word-break:break-all;
+    background:#0c0318;
+    padding:20px 24px;
+    border-radius:24px;
+    border:3px solid #2a0e40;
+    line-height:1.6;
+  }
+
+  /* ── In-arena objects ── */
+  .fruit,.loot{
+    position:absolute;
+    transform:translate(-50%,-50%);
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    border:3px solid #243354;
+    background:#0b1735aa;
+    backdrop-filter:blur(2px);
+    box-shadow:0 10px 30px #0006;
+    cursor:pointer;
+    user-select:none;
+  }
+  .fruit span{ font-size:44px; filter:drop-shadow(0 2px 0 #0008); }
+  .f-svg{ background:transparent!important; border-color:transparent!important; backdrop-filter:none!important; }
+  .f-svg svg{ width:100%; height:100%; display:block; }
+  .loot{ background:#1f2d55cc; border-color:#5a79ff55; }
+
+  /* ── Overlays ── */
+  .hint{
+    position:absolute; left:50%; top:50%;
+    transform:translate(-50%,-50%);
+    padding:20px 32px;
+    border-radius:32px;
+    background:rgba(0,0,0,.6);
+    border:3px solid rgba(255,255,255,.18);
+    font-weight:800;
+    display:none;
+    backdrop-filter:blur(6px);
+    font-size:28px;
+  }
+  .ok{  color:#b7f7d5; border-color:rgba(34,197,94,.35);  background:rgba(16,185,129,.12); }
+  .bad{ color:#fecaca; border-color:rgba(239,68,68,.35);   background:rgba(239,68,68,.12); }
+  .warn{color:#fde68a; border-color:rgba(245,158,11,.35);  background:rgba(245,158,11,.12); }
+
+  .wawa{
+    position:absolute; left:50%; top:46%;
+    transform:translate(-50%,-50%);
+    font-family:'Pacifico',cursive;
+    color:white; font-size:128px;
+    text-shadow:0 0 0 #ff79c6,0 0 16px #ff79c6,0 0 24px #ff79c6;
+    display:none; pointer-events:none; z-index:9999;
+  }
+  .wawa small{
+    display:block; font-size:40px;
+    letter-spacing:1px; margin-top:-16px; opacity:.85;
+  }
+
+  .peekTag{
+    position:absolute; transform:translate(-50%,-120%);
+    padding:4px 14px; border-radius:16px;
+    background:#0b1735f0; border:3px solid #3956aa;
+    color:#cfe6ff; font-size:24px; white-space:nowrap; pointer-events:none;
+  }
+  .floating{
+    position:absolute; width:12px; height:12px;
+    border-radius:4px; pointer-events:none;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Title bar -->
+  <div class="titlebar">
+    <h1>🍉 GRAVITY FRUITS</h1>
+    <button id="infoBtn" class="btn-info">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="22 17 20 30"><path d="M35.99,24.4c0,2.09-1.79,3.79-3.99,3.79s-3.99-1.7-3.99-3.79,1.79-3.79,3.99-3.79,3.99,1.7,3.99,3.79ZM35.08,43.39h-6.08c-.3,0-.55-.24-.55-.54v-12.07c0-.29.24-.53.53-.53h6.08c.3,0,.55.24.55.54v12.07c0,.29-.24.53-.53.53Z"/></svg>
+    </button>
+  </div>
+
+  <!-- Arena + HUD -->
+  <div class="arena-wrap">
+    <div class="hud">
+      <div class="pill p-mult">Mult <b id="multShow">1.00×</b></div>
+      <div class="pill p-combo">Combo <b id="comboShow">0 (+0.00×)</b></div>
+    </div>
+    <div id="arena">
+      <div id="wawa" class="wawa">Wawaweewa!<small>Cashed out</small></div>
+      <div id="hint" class="hint"></div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+
+    <!-- Bet section -->
+    <div class="bet-section">
+<div class="bet-presets">
+        <button id="betHalf"   class="btn-preset">½</button>
+        <button id="betDouble" class="btn-preset">2X</button>
+        <button id="betMax"    class="btn-preset">Max</button>
+      </div>
+      <div class="bet-adjuster">
+        <button id="betMinus" class="btn-circle-adj">−</button>
+        <div class="bet-amount-wrap">
+          <span class="bet-currency">$</span>
+          <input id="bet" type="number" min="1" max="1000" step="1" value="10"/>
+        </div>
+        <button id="betPlus" class="btn-circle-adj">+</button>
+      </div>
+    </div>
+
+    <!-- Action row -->
+    <div class="action-row">
+      <button id="start" class="btn-action btn-start">Start Round</button>
+      <div class="action-sub">
+        <button id="reset" class="btn-ghost">Reset</button>
+        <button id="cash"  class="btn-action btn-cash" disabled>Cash Out</button>
+      </div>
+    </div>
+
+    <!-- Credit row -->
+    <div class="credit-row">
+      <div class="pill p-bal">Balance <b id="bal">$1,000</b></div>
+      <div class="pill p-nonce">Nonce <b id="nonce">0</b></div>
+    </div>
+
+  </div>
+
+  <!-- Provably fair — single compact row -->
+  <div class="fair-row">
+    <div class="fair-pill fair-pill-hash">
+      Seed <span id="seedHash" class="fair-mono">—</span>
+    </div>
+    <div class="fair-pill">
+      Client <input id="clientSeed" class="fair-input" value="player"/>
+    </div>
+    <button id="rotateSeed" class="btn-ghost btn-rotate"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M32.93,11.98c-7.13.05-13.38,3.82-16.89,9.48l-4.21-4.21c-.34-.34-.92-.1-.92.38v13.36c0,.3.24.54.54.54h13.36c.48,0,.72-.58.38-.92l-5.3-5.3c2.44-4.79,7.42-8.08,13.17-8.08,8.09,0,14.73,6.58,14.79,14.67.06,8.21-6.58,14.89-14.78,14.89-6.41,0-11.87-4.09-13.92-9.8-.08-.21-.28-.35-.5-.35h-4.37c-.36,0-.61.34-.52.68,2.33,8.48,10.09,14.71,19.31,14.71,11.06,0,20.02-8.97,20.02-20.02,0-11.08-9.07-20.1-20.16-20.02Z"/></svg></button>
+  </div>
+
+
+  <!-- Info overlay -->
+  <div id="infoOverlay" class="info-overlay hidden">
+    <div class="info-sheet">
+      <div class="info-header">
+        <div>
+          <div class="info-header-title">Game Info</div>
+          <div class="info-header-sub">Gravity Frut</div>
+        </div>
+        <button id="infoClose" class="info-close"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M55.74,48.49c.54.54.54,1.4,0,1.94l-5.18,5.18c-.54.54-1.4.54-1.94,0l-16.58-16.58-16.58,16.58c-.54.54-1.4.54-1.94,0l-5.18-5.18c-.54-.54-.54-1.4,0-1.94l16.58-16.58L8.35,15.34c-.54-.54-.54-1.4,0-1.94l5.18-5.18c.54-.54,1.4-.54,1.94,0l16.58,16.58,16.58-16.58c.54-.54,1.4-.54,1.94,0l5.18,5.18c.54.54.54,1.4,0,1.94l-16.58,16.58,16.58,16.58Z"/></svg></button>
+      </div>
+      <div class="info-section">
+        <div class="info-section-title">Mystery Box</div>
+        <div class="info-line">Tap a Mystery Box to reveal one of three outcomes:</div>
+        <div class="info-line">🎲 <b>Random Multiplier</b> — ×2 to ×20 applied to your current multiplier</div>
+        <div class="info-line">👁 <b>Reveal</b> — shows the value of all falling fruits for 3 seconds</div>
+        <div class="info-line">❄️ <b>Freeze</b> — locks your current multiplier as a guaranteed minimum payout</div>
+      </div>
+      <div class="info-section">
+        <div class="info-section-title">Provably Fair</div>
+        <div class="info-line">The server seed hash is committed before each round. Verify fairness by confirming <code>SHA-256(server seed) = hash below</code> after the round.</div>
+        <div id="infoSeedHash" class="info-hash">—</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+/* ------------------ Config per your request ------------------ */
+const MAX_MULT = 5000;
+const MAX_BET  = 1000;
+const BASE_FALL_VY = 40, BASE_FALL_AY = 42;
+const FALL_TWEAK   = 0.85;
+
+function clamp(x,a,b){ return Math.max(a, Math.min(b,x)); }
+function crashChanceAt(t){ return clamp(0.12 + 0.35*(t/30), 0.12, 0.22); }
+function sampleMultiplier(rng, t){
+  if (t < 8) return 1.05 + rng()*0.55;
+  const u=rng();
+  if (u < 0.70) return 1.05 + rng()*0.75;
+  if (u < 0.93) return 1.80 + rng()*1.70;
+  if (u < 0.99) return 3.50 + rng()*3.50;
+  return 7.0 + rng()*8.0;
+}
+
+const LOOT_SPAWN_CHANCE = 0.07;
+
+const MYSTERY_WEIGHTS = [
+  ['mult',    0.45],
+  ['reveal3', 0.30],
+  ['freeze',  0.25],
+];
+
+
+const FRUIT_SVG = {
+  watermelon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%"><g transform="rotate(180,50,50)"><path d="M10 42 Q50 8 90 42 L50 90 Z" fill="#4caf50"/><path d="M14 43 Q50 13 86 43 L50 86 Z" fill="#c8f0b0"/><path d="M19 45 Q50 19 81 45 L50 82 Z" fill="#e8404a"/><ellipse cx="50" cy="57" rx="2.5" ry="4" fill="#1a1a2e"/><ellipse cx="38" cy="63" rx="2.5" ry="4" fill="#1a1a2e" transform="rotate(-12 38 63)"/><ellipse cx="62" cy="63" rx="2.5" ry="4" fill="#1a1a2e" transform="rotate(12 62 63)"/><ellipse cx="43" cy="48" rx="2" ry="3.5" fill="#1a1a2e" transform="rotate(-8 43 48)"/><ellipse cx="57" cy="48" rx="2" ry="3.5" fill="#1a1a2e" transform="rotate(8 57 48)"/></g></svg>`,
+  lemon:       `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="53" rx="32" ry="28" fill="#f5d923"/><ellipse cx="20" cy="53" rx="10" ry="8" fill="#f5d923"/><ellipse cx="80" cy="53" rx="10" ry="8" fill="#f5d923"/><ellipse cx="40" cy="43" rx="10" ry="7" fill="#fbe96a" opacity="0.55"/><line x1="50" y1="25" x2="50" y2="33" stroke="#4a7c3f" stroke-width="3" stroke-linecap="round"/><ellipse cx="58" cy="27" rx="9" ry="4.5" fill="#5cad50" transform="rotate(25 58 27)"/></svg>`,
+  orange:      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="54" r="32" fill="#f47c20"/><circle cx="40" cy="42" r="11" fill="#f9a95a" opacity="0.45"/><line x1="50" y1="22" x2="50" y2="29" stroke="#4a7c3f" stroke-width="3.5" stroke-linecap="round"/><ellipse cx="58" cy="24" rx="9" ry="4.5" fill="#5cad50" transform="rotate(20 58 24)"/></svg>`,
+  grapes:      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%"><line x1="50" y1="16" x2="50" y2="26" stroke="#4a7c3f" stroke-width="3" stroke-linecap="round"/><ellipse cx="56" cy="20" rx="8" ry="4.5" fill="#5cad50" transform="rotate(30 56 20)"/><circle cx="38" cy="38" r="11" fill="#7b3fbe"/><circle cx="62" cy="38" r="11" fill="#7b3fbe"/><circle cx="27" cy="55" r="11" fill="#7b3fbe"/><circle cx="50" cy="55" r="11" fill="#7b3fbe"/><circle cx="73" cy="55" r="11" fill="#7b3fbe"/><circle cx="38" cy="72" r="11" fill="#7b3fbe"/><circle cx="62" cy="72" r="11" fill="#7b3fbe"/><circle cx="50" cy="87" r="11" fill="#7b3fbe"/><circle cx="34" cy="33" r="3.5" fill="#a87de0" opacity="0.55"/><circle cx="58" cy="33" r="3.5" fill="#a87de0" opacity="0.55"/><circle cx="23" cy="50" r="3.5" fill="#a87de0" opacity="0.55"/><circle cx="46" cy="50" r="3.5" fill="#a87de0" opacity="0.55"/><circle cx="69" cy="50" r="3.5" fill="#a87de0" opacity="0.55"/><circle cx="34" cy="67" r="3.5" fill="#a87de0" opacity="0.55"/><circle cx="58" cy="67" r="3.5" fill="#a87de0" opacity="0.55"/><circle cx="46" cy="82" r="3.5" fill="#a87de0" opacity="0.55"/></svg>`,
+  plum:        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="58" rx="30" ry="34" fill="#6b2fa0"/><path d="M50 32 Q44 58 50 80" stroke="#55187c" stroke-width="2.5" fill="none" stroke-linecap="round"/><ellipse cx="36" cy="45" rx="10" ry="8" fill="#9b5fd6" opacity="0.5"/><path d="M50 24 Q54 16 58 12" stroke="#4a7c3f" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="62" cy="11" rx="9" ry="4.5" fill="#5cad50" transform="rotate(30 62 11)"/></svg>`,
+  cherries:    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%"><path d="M38 55 Q34 35 52 22" stroke="#4a7c3f" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M62 55 Q66 35 52 22" stroke="#4a7c3f" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="52" cy="22" rx="9" ry="5" fill="#5cad50" transform="rotate(-20 52 22)"/><circle cx="35" cy="63" r="13" fill="#d62b2b"/><circle cx="31" cy="59" r="4" fill="#e85555" opacity="0.5"/><circle cx="65" cy="63" r="13" fill="#d62b2b"/><circle cx="61" cy="59" r="4" fill="#e85555" opacity="0.5"/></svg>`,
+  mysteryBox:  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%"><rect x="18" y="42" width="64" height="46" rx="6" fill="#1e3a8a"/><rect x="14" y="34" width="72" height="14" rx="5" fill="#2563eb"/><rect x="46" y="34" width="8" height="54" fill="#facc15"/><rect x="14" y="38" width="72" height="6" fill="#facc15"/><ellipse cx="40" cy="34" rx="11" ry="6" fill="#fbbf24" transform="rotate(-25 40 34)"/><ellipse cx="60" cy="34" rx="11" ry="6" fill="#fbbf24" transform="rotate(25 60 34)"/><circle cx="50" cy="34" r="5" fill="#f59e0b"/><text x="50" y="78" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="900" font-size="36" fill="#ffffff" stroke="#1a1a4a" stroke-width="4" paint-order="stroke">?</text><circle cx="26" cy="52" r="2.5" fill="#facc15" opacity="0.8"/><circle cx="74" cy="60" r="2" fill="#facc15" opacity="0.7"/><circle cx="28" cy="72" r="1.8" fill="#93c5fd" opacity="0.8"/><circle cx="72" cy="78" r="2.2" fill="#93c5fd" opacity="0.7"/></svg>`,
+};
+
+const FRUITS = [
+  { key:'cherries',   svg: FRUIT_SVG.cherries },
+  { key:'grapes',     svg: FRUIT_SVG.grapes },
+  { key:'watermelon', svg: FRUIT_SVG.watermelon },
+  { key:'lemon',      svg: FRUIT_SVG.lemon },
+  { key:'orange',     svg: FRUIT_SVG.orange },
+  { key:'plum',       svg: FRUIT_SVG.plum },
+];
+
+/* ------------------ Provably-fair ------------------ */
+async function sha256hex(str){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+function xorshift32(seed){ let x=seed>>>0; return ()=>{ x^=x<<13; x^=x>>>17; x^=x<<5; return (x>>>0)/4294967296; }; }
+function hex32(h){ return parseInt(h.slice(0,8),16)>>>0; }
+
+/* ------------------ SFX ------------------ */
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let actx=null;
+function ensureAudio(){ if(!actx) actx=new AudioCtx(); }
+function beep(freq=660,dur=0.06,type='triangle',gain=0.08){
+  if(!actx) return; const t=actx.currentTime; const o=actx.createOscillator(), g=actx.createGain();
+  o.type=type; o.frequency.setValueAtTime(freq,t);
+  g.gain.setValueAtTime(gain,t); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(g).connect(actx.destination); o.start(t); o.stop(t+dur);
+}
+const sfx = {
+  pop(){   beep(760,.05,'triangle',.07); setTimeout(()=>beep(520,.04,'square',.06),20); },
+  loot(){  beep(900,.08,'sawtooth',.06); },
+  crash(){ beep(120,.16,'square',.1); setTimeout(()=>beep(70,.22,'square',.09),110); },
+  cash(){  beep(760,.12,'triangle',.08); setTimeout(()=>beep(1010,.12,'triangle',.07),80); },
+  freeze(){ beep(420,.08,'square',.07); },
+  reveal(){ beep(980,.09,'sine',.06); setTimeout(()=>beep(880,.08,'sine',.05),100); },
+};
+
+/* ------------------ DOM & state ------------------ */
+const arena = document.getElementById('arena');
+const hint  = document.getElementById('hint');
+const wawa  = document.getElementById('wawa');
+const $ = s=>document.querySelector(s);
+const fmt = n=>'$'+Number(n).toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:0});
+
+let balance=1000, bet=10, status='idle';
+let mult=1.0, lockedMin=0;
+let combo=0;
+const COMBO_STEP=0.02;
+const COMBO_CAP =0.50;
+let fruits=[];
+let rng=Math.random;
+let serverSeed = Math.random().toString(36).slice(2);
+let serverHash = '';
+let clientSeed = 'player';
+let nonce=0;
+
+let startTime=0, lastTime=0, spawnAcc=0, revealUntil=0;
+let raf=null;
+
+/* ------------------ Helpers ------------------ */
+const LANES = 6;
+function laneX(i){
+  const w = arena.offsetWidth;
+  const margin=16, laneW=(w - margin*2)/LANES;
+  return Math.round(margin + laneW*i + laneW/2);
+}
+function particleBurst(x,y,color='#ffd54a',n=14){
+  for(let i=0;i<n;i++){
+    const p=document.createElement('div');
+    p.className='floating';
+    p.style.left=x+'px'; p.style.top=y+'px';
+    p.style.background=color;
+    arena.appendChild(p);
+    const dx=(Math.random()*2-1)*60, dy=(Math.random()*2-1)*50;
+    const dur=350+Math.random()*250;
+    p.animate([{transform:`translate(-3px,-3px)`},{transform:`translate(${dx}px,${dy}px)`,opacity:0}],
+              {duration:dur,fill:'forwards',easing:'cubic-bezier(.2,.7,.1,1)'})
+      .onfinish = ()=>p.remove();
+  }
+}
+function showHint(text, cls='ok', ms=1100){
+  hint.textContent=text; hint.className='hint '+cls; hint.style.display='block';
+  setTimeout(()=>{ if(hint.textContent===text) hint.style.display='none'; }, ms);
+}
+function setStatus(s){ status=s; }
+function syncHUD(){
+  document.getElementById('bal').textContent      = fmt(balance);
+  document.getElementById('multShow').textContent = mult.toFixed(2)+'×';
+  const bonus = Math.min(combo*COMBO_STEP, COMBO_CAP);
+  document.getElementById('comboShow').textContent = `${combo} (+${bonus.toFixed(2)}×)`;
+  document.getElementById('nonce').textContent    = String(nonce);
+  document.getElementById('seedHash').textContent = serverHash;
+}
+
+/* ------------------ Spawning ------------------ */
+function makeFruit(){
+  const lane = Math.floor(rng()*LANES);
+  const x = laneX(lane);
+  const roll = rng();
+
+  let kind='fruit', type=null, emoji=null, svg=null;
+  if(roll < LOOT_SPAWN_CHANCE){ kind='loot'; svg=FRUIT_SVG.mysteryBox; type='loot'; }
+  else {
+    const base = FRUITS[Math.floor(rng()*FRUITS.length)];
+    type=base.key; svg=base.svg;
+  }
+
+  const size = 100;
+
+  const obj = {
+    id: crypto.randomUUID(), kind, type, emoji, svg,
+    x, y: -70,
+    vy: (BASE_FALL_VY + rng()*18)*FALL_TWEAK,
+    ay: (BASE_FALL_AY + rng()*24)*FALL_TWEAK,
+    born: performance.now(), lane, m:1.0, crashToken: rng(), elem:null, peek:null,
+    size
+  };
+  if(kind==='fruit'){
+    const t=(performance.now()-startTime)/1000;
+    obj.m = sampleMultiplier(rng, t);
+  } else { obj.m = 0; }
+  return obj;
+}
+function spawnFruit(){
+  const f = makeFruit();
+  const div = document.createElement('button');
+  div.className = (f.kind==='fruit' ? 'fruit' : 'loot');
+  div.style.left = f.x+'px'; div.style.top = f.y+'px';
+  div.style.width = f.size+'px'; div.style.height = f.size+'px';
+  div.innerHTML = f.svg ? f.svg : `<span>${f.emoji||'?'}</span>`;
+  if(f.svg) div.classList.add('f-svg');
+  div.addEventListener('click', ()=> onClickFruit(f.id));
+  f.elem = div;
+  fruits.push(f);
+  arena.appendChild(div);
+}
+function updatePositions(dt){
+  const h = arena.offsetHeight;
+  for(const f of fruits){
+    f.vy += f.ay*dt; f.y += f.vy*dt;
+    if(f.elem){ f.elem.style.top=f.y+'px'; f.elem.style.left=f.x+'px'; }
+  }
+  fruits = fruits.filter(f=>{
+    if(f.y > h+90){ if(f.elem) f.elem.remove(); if(f.peek) f.peek.remove(); return false; }
+    return true;
+  });
+}
+
+/* ------------------ Reveal ------------------ */
+function triggerReveal(ms){
+  sfx.reveal();
+  if (navigator.vibrate) navigator.vibrate([15,30,15]);
+  const now=performance.now(); revealUntil = now + ms;
+  for(const f of fruits){
+    if(f.kind!=='fruit') continue;
+    if(!f.peek){
+      const tag=document.createElement('div'); tag.className='peekTag'; tag.textContent = `${f.m.toFixed(2)}×`;
+      arena.appendChild(tag); f.peek=tag;
+    }
+    f.peek.style.left=f.x+'px'; f.peek.style.top=f.y+'px'; f.peek.style.display='block';
+  }
+  setTimeout(()=>{ for(const f of fruits){ if(f.peek){ f.peek.style.display='none'; } } }, ms);
+}
+
+/* ------------------ Handlers ------------------ */
+function pickWeighted(table){ let r=rng(), acc=0; for(const [k,w] of table){ acc+=w; if(r<acc) return k; } return table[0][0]; }
+
+function onClickFruit(id){
+  if(status!=='running') return;
+  const f = fruits.find(x=>x.id===id); if(!f) return;
+  const now=performance.now(); const t=(now-startTime)/1000;
+
+  if(f.kind==='loot'){
+    combo = 0;
+    const outcome = pickWeighted(MYSTERY_WEIGHTS);
+    sfx.loot(); particleBurst(f.x,f.y,'#facc15', 16);
+    if (navigator.vibrate) navigator.vibrate([20,40,20]);
+    if(outcome==='freeze'){
+      lockedMin = Math.max(lockedMin, mult);
+      showHint(`Freeze at ${lockedMin.toFixed(2)}×`, 'ok');
+      sfx.freeze();
+    } else if(outcome==='mult'){
+      const m = parseFloat((2 + rng()*18).toFixed(1));
+      mult = Math.min(mult * m, MAX_MULT);
+      showHint(`×${m} boost!`, 'ok');
+    } else if(outcome==='reveal3'){ triggerReveal(3000); showHint('Reveal 3s','warn'); }
+
+    if(f.elem) f.elem.remove(); if(f.peek) f.peek.remove();
+    fruits = fruits.filter(x=>x.id!==id);
+    syncHUD();
+    return;
+  }
+
+  const pCrash = crashChanceAt(t);
+  const isCrash = rng() < pCrash;
+
+  sfx.pop();
+  particleBurst(f.x,f.y,'#ffd54a', 18);
+  if (navigator.vibrate) navigator.vibrate([18,28,18]);
+
+  if(isCrash){ crashRound(); return; }
+
+  mult = Math.min(mult * f.m, MAX_MULT);
+  combo += 1;
+  const add = Math.min(combo*COMBO_STEP, COMBO_CAP);
+  mult = Math.min(mult + add, MAX_MULT);
+
+  if(f.elem) f.elem.remove(); if(f.peek) f.peek.remove();
+  fruits = fruits.filter(x=>x.id!==id);
+  syncHUD();
+}
+
+function crashRound(){
+  if(status!=='running') return;
+  setStatus('crashed');
+  const paid = lockedMin>0 ? Math.floor(bet * lockedMin) : 0;
+  if(paid>0){ balance += paid; showHint(`Crash — Paid ${lockedMin.toFixed(2)}× → ${fmt(paid)}`,'bad'); }
+  else { showHint('Crash!','bad'); }
+  sfx.crash();
+  stop();
+}
+
+/* ------------------ Round lifecycle ------------------ */
+function startRound(){
+  if(status!=='idle') return;
+  ensureAudio();
+  bet = clamp(Math.floor(Number(document.getElementById('bet').value||0)),1,MAX_BET);
+  if(balance < bet){ showHint('Not enough balance','bad'); return; }
+  balance -= bet;
+
+  clientSeed = document.getElementById('clientSeed').value || 'player';
+  nonce += 1;
+  sha256hex(`${serverSeed}|${clientSeed}|${nonce}|newton-fruta`).then(h=>{ rng = xorshift32(hex32(h)); });
+
+  mult=1.0; lockedMin=0; combo=0; revealUntil=0;
+  fruits.forEach(f=>{ if(f.elem) f.elem.remove(); if(f.peek) f.peek.remove(); });
+  fruits=[]; spawnAcc=0; startTime=performance.now(); lastTime=startTime; wawa.style.display='none';
+
+  setStatus('running'); document.getElementById('cash').disabled=false; syncHUD(); loop();
+}
+function cashOut(){
+  if(status!=='running') return;
+  const win = Math.floor(bet * mult); balance += win; setStatus('cashed');
+  sfx.cash();
+  wawa.style.display='block';
+  wawa.animate(
+    [{opacity:0, transform:'translate(-50%,-50%) scale(0.95)'},
+     {opacity:1, transform:'translate(-50%,-50%) scale(1)'}],
+    {duration:250,fill:'forwards',easing:'cubic-bezier(.2,.8,.2,1)'}
+  );
+  stop();
+}
+function resetGame(){
+  stop(); setStatus('idle'); mult=1.0; lockedMin=0; combo=0; revealUntil=0;
+  fruits.forEach(f=>{ if(f.elem) f.elem.remove(); if(f.peek) f.peek.remove(); });
+  fruits=[]; wawa.style.display='none'; syncHUD();
+}
+function stop(){ if(raf){ cancelAnimationFrame(raf); raf=null; } document.getElementById('cash').disabled=true; syncHUD(); }
+
+/* ------------------ Main loop ------------------ */
+function loop(ts){
+  raf = requestAnimationFrame(loop);
+  const now = ts || performance.now(); const dt = (now - lastTime)/1000; lastTime = now;
+
+  spawnAcc += dt;
+  const elapsed = (now - startTime)/1000;
+  const every = clamp(0.32 - 0.10*(elapsed/20), 0.18, 0.32);
+  while(spawnAcc >= every){ spawnAcc -= every; spawnFruit(); }
+
+  updatePositions(dt);
+
+  if(now < revealUntil){
+    for(const f of fruits){ if(f.peek){ f.peek.style.left=f.x+'px'; f.peek.style.top=f.y+'px'; } }
+  }
+}
+
+/* ------------------ UI wiring ------------------ */
+document.getElementById('start').addEventListener('click', ()=>{ ensureAudio(); startRound(); });
+document.getElementById('cash').addEventListener('click', cashOut);
+document.getElementById('reset').addEventListener('click', resetGame);
+document.getElementById('rotateSeed').addEventListener('click', ()=>{
+  serverSeed = Math.random().toString(36).slice(2);
+  sha256hex(serverSeed).then(h=>{ serverHash=h; syncHUD(); });
+  nonce = 0;
+});
+
+/* Info modal */
+const infoOverlay = document.getElementById('infoOverlay');
+document.getElementById('infoBtn').addEventListener('click', ()=>{
+  document.getElementById('infoSeedHash').textContent = serverHash || '—';
+  infoOverlay.classList.remove('hidden');
+});
+document.getElementById('infoClose').addEventListener('click', ()=>{ infoOverlay.classList.add('hidden'); });
+infoOverlay.addEventListener('click', e=>{ if(e.target===infoOverlay) infoOverlay.classList.add('hidden'); });
+function syncBetInput(){
+  document.getElementById('bet').value = String(bet);
+}
+document.getElementById('bet').addEventListener('input', ()=>{
+  bet = clamp(Math.floor(document.getElementById('bet').value||0),1,MAX_BET);
+});
+['betHalf','betDouble','betMax'].forEach(id=>{
+  document.getElementById(id).addEventListener('click', ()=>{
+    if(id==='betHalf')   bet = Math.max(1, Math.floor(bet/2));
+    if(id==='betDouble') bet = Math.min(MAX_BET, bet*2);
+    if(id==='betMax')    bet = Math.min(MAX_BET, Math.max(1, balance));
+    syncBetInput();
+  });
+});
+document.getElementById('betMinus').addEventListener('click', ()=>{
+  const step = Math.max(1, Math.round(bet * 0.1));
+  bet = Math.max(1, bet - step);
+  syncBetInput();
+});
+document.getElementById('betPlus').addEventListener('click', ()=>{
+  const step = Math.max(1, Math.round(bet * 0.1));
+  bet = Math.min(MAX_BET, bet + step);
+  syncBetInput();
+});
+arena.addEventListener('pointerdown', ()=>ensureAudio());
+
+/* init */
+sha256hex(serverSeed).then(h=>{ serverHash=h; syncHUD(); });
+syncHUD();
+
+/* Scale canvas to fit window */
+function scaleGame(){
+  const s = Math.min(window.innerWidth/910, window.innerHeight/1672);
+  document.querySelector('.wrap').style.transform = `scale(${s})`;
+}
+window.addEventListener('resize', scaleGame);
+scaleGame();
+</script>
+</body>
+</html>
