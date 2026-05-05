@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-22 -12 424 286">
+<g>
+  <!-- rind strokes + flesh -->
+  <path fill="#ff2a2a" d="M359.86,134.32A165,165,0,1,1,52.25,14.84l95.87,208.89Z"/>
+  <rect fill="#ff2a2a" x="80.42" y="74.26" width="231.83" height="95" transform="translate(335.26 306.35) rotate(-158.77)"/>
+  <rect fill="#ff2a2a" x="52.77" y="27.37" width="52.6" height="57.79" transform="translate(132.41 137.33) rotate(-158.77)"/>
+  <rect fill="#ff2a2a" x="55.29" y="19.23" width="13.88" height="13.88" transform="translate(110.76 73.08) rotate(-158.77)"/>
+  <rect fill="#ff2a2a" x="50.65" y="19.79" width="27.06" height="8.6" transform="translate(115.28 69.78) rotate(-158.77)"/>
+  <rect fill="#ff2a2a" x="51.99" y="15.17" width="2.02" height="1.05" transform="translate(96.72 49.52) rotate(-158.77)"/>
+  <rect fill="#ff2a2a" x="295.13" y="122.19" width="66.34" height="3.54" transform="translate(589.45 358.37) rotate(-158.77)"/>
+  <rect fill="#ff2a2a" x="287.34" y="119.81" width="58.21" height="46.9" transform="translate(559.55 391.37) rotate(-158.77)"/>
+  <rect fill="#ff2a2a" x="335.56" y="130.87" width="18.77" height="12.36" transform="translate(616.86 389.7) rotate(-158.77)"/>
+  <rect fill="#ff2a2a" x="138.83" y="149.01" width="24.51" height="75.06" transform="translate(224.39 415.12) rotate(-158.77)"/>
+  <rect fill="#ff2a2a" x="80.64" y="131.32" width="74.38" height="44.26" transform="translate(172.12 339.14) rotate(-158.77)"/>
+  <rect fill="#ff2a2a" x="118.56" y="179.71" width="26.21" height="19.66" transform="translate(185.77 413.89) rotate(-158.77)"/>
+  <rect fill="#ff2a2a" x="158.97" y="146.71" width="27.32" height="83.23" transform="translate(265.35 426.38) rotate(-158.77)"/>
+  <rect fill="#ff2a2a" x="168.96" y="167.41" width="63.49" height="51.23" transform="translate(317.9 445.62) rotate(-158.77)"/>
+  <path fill="none" stroke="#ff6b6b" stroke-width="18" d="M369.18,137.94A175,175,0,1,1,42.93,11.22"/>
+  <path fill="none" stroke="#b9e4b1" stroke-width="22" d="M383.16,143.37c-38,97.82-148.08,146.32-245.9,108.32S-9,103.61,28.94,5.79"/>
+  <path fill="none" stroke="#1b7f2a" stroke-width="12" d="M392.49,147c-40,103-155.88,154-258.85,114s-154-155.87-114-258.84"/>
+  <!-- seeds -->
+  <ellipse fill="#111" cx="254.9" cy="159.74" rx="10" ry="6" transform="translate(13.71 339.51) rotate(-68.77)"/>
+  <ellipse fill="#111" cx="210.06" cy="164.7" rx="9.14" ry="6" transform="translate(-19.52 300.88) rotate(-68.77)"/>
+  <ellipse fill="#111" cx="182.7" cy="124.66" rx="9.14" ry="6" transform="translate(0.34 249.83) rotate(-68.77)"/>
+  <ellipse fill="#111" cx="138.79" cy="127.22" rx="9.14" ry="6" transform="translate(-30.05 210.54) rotate(-68.77)"/>
+  <ellipse fill="#111" cx="108.13" cy="95.7" rx="9.14" ry="6" transform="translate(-20.23 161.84) rotate(-68.77)"/>
+  <ellipse fill="#111" cx="220.59" cy="109.97" rx="9.14" ry="6" transform="translate(38.22 275.78) rotate(-68.77)"/>
+  <ellipse fill="#111" cx="177.29" cy="83.35" rx="9.14" ry="6" transform="translate(35.41 218.43) rotate(-68.77)"/>
+  <ellipse fill="#111" cx="127.37" cy="73.76" rx="9.14" ry="6" transform="translate(12.5 165.79) rotate(-68.77)"/>
+  <ellipse fill="#111" cx="273.21" cy="140.21" rx="9.14" ry="6" transform="translate(43.59 344.12) rotate(-68.77)"/>
+</g>
+</svg>

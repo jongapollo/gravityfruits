@@ -110,7 +110,7 @@
     padding:10px 22px;
     border-radius:40px;
     border:3px solid var(--line);
-    background:#160424;
+    background:#000;
     font-size:28px;
     color:var(--label);
     white-space:nowrap;
@@ -147,51 +147,27 @@
 
   /* Bet section */
   .bet-section{ display:flex; flex-direction:column; gap:14px; }
-  .bet-per-spin-label{
-    text-align:center;
-    font-size:30px;
-    font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:2px;
-    color:var(--label);
-  }
-  /* Preset buttons row */
-  .bet-presets{
-    display:flex;
-    gap:14px;
-  }
-  .btn-preset{
-    flex:1;
-    padding:16px 0;
-    border:5px solid var(--line);
-    border-radius:60px;
-    background:#1e0830;
-    color:var(--label);
-    font-size:38px;
-    font-weight:800;
-    font-family:'Montserrat',sans-serif;
-    cursor:pointer;
-    text-transform:uppercase;
-    letter-spacing:1px;
-    transition:all .15s;
-  }
-  .btn-preset:hover{ background:#2e1244; color:var(--text); border-color:var(--accent); }
-  #betHalf{ font-size:54px; }
-  /* − / amount / + row */
-  .bet-adjuster{
+  /* Compact bet pill — circles + display inside one container */
+  .bet-pill{
     display:flex;
     align-items:center;
-    gap:16px;
+    gap:10px;
+    padding:5px;
+    border-radius:9999px;
+    border:5px solid var(--line);
+    background:#000;
+    overflow:hidden;
   }
+  .bet-pill-amount{ flex:1; display:flex; align-items:center; justify-content:center; gap:8px; }
   .btn-circle-adj{
     flex-shrink:0;
-    width:96px;
-    height:96px;
+    width:120px;
+    height:120px;
     border-radius:50%;
     border:5px solid var(--line);
     background:#1e0830;
     color:var(--text);
-    font-size:58px;
+    font-size:72px;
     font-weight:900;
     cursor:pointer;
     display:flex;
@@ -202,38 +178,42 @@
     font-family:'Montserrat',sans-serif;
   }
   .btn-circle-adj:hover{ background:#2e1244; border-color:var(--accent); }
-  .bet-amount-wrap{
-    flex:1;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:6px;
-    background:#0d0418;
-    border-radius:60px;
-    border:5px solid var(--line);
-    padding:18px 24px;
-    transition:border-color .15s;
-  }
-  .bet-amount-wrap:focus-within{
-    border-color:var(--accent);
-    box-shadow:0 0 0 6px #a855f720;
-  }
+  .bet-pill-amount{ flex:1; display:flex; align-items:center; justify-content:center; gap:8px; background:#000; }
   .bet-currency{ font-size:38px; font-weight:900; color:var(--text); }
-  input#bet{
-    background:transparent;
-    border:none;
-    color:var(--text);
-    font-size:44px;
-    font-family:'Montserrat',sans-serif;
-    font-weight:900;
-    text-align:center;
-    width:0;
-    flex:1;
+  .bet-value{ font-size:52px; font-weight:900; color:var(--text); }
+  /* Bet slider */
+  .bet-slider-wrap{ padding:24px 8px 10px; }
+  input[type=range].bet-slider{
+    -webkit-appearance:none;
+    appearance:none;
+    display:block;
+    width:100%;
+    height:16px;
+    border-radius:8px;
     outline:none;
-    -moz-appearance:textfield;
+    cursor:pointer;
+    border:none;
+    background:linear-gradient(to right, var(--accent) var(--fill,3%), #2a0e40 var(--fill,3%));
   }
-  input#bet::-webkit-outer-spin-button,
-  input#bet::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+  input[type=range].bet-slider::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:52px;
+    height:52px;
+    border-radius:50%;
+    background:var(--accent);
+    border:3px solid var(--accent2);
+    box-shadow:0 0 0 10px #a855f722, 0 4px 16px #0008;
+    cursor:pointer;
+  }
+  input[type=range].bet-slider::-moz-range-thumb{
+    width:52px;
+    height:52px;
+    border-radius:50%;
+    background:var(--accent);
+    border:3px solid var(--accent2);
+    box-shadow:0 0 0 10px #a855f722, 0 4px 16px #0008;
+    cursor:pointer;
+  }
 
   /* Action row */
   .action-row{
@@ -241,7 +221,8 @@
     flex-direction:column;
     gap:16px;
   }
-  .btn-start{ width:100%; }
+  .start-row{ display:flex; gap:16px; }
+  .start-row .btn-start{ flex:1; }
   .action-sub{
     display:flex;
     gap:16px;
@@ -344,7 +325,7 @@
     padding:12px 20px;
     border-radius:60px;
     border:5px solid #2a0e40;
-    background:#130420;
+    background:#000;
     font-size:28px;
     font-weight:700;
     color:var(--label);
@@ -481,8 +462,8 @@
     color:#7a60a0;
     word-break:break-all;
     background:#0c0318;
-    padding:20px 24px;
-    border-radius:24px;
+    padding:20px 40px;
+    border-radius:100px;
     border:3px solid #2a0e40;
     line-height:1.6;
   }
@@ -576,24 +557,25 @@
 
     <!-- Bet section -->
     <div class="bet-section">
-<div class="bet-presets">
-        <button id="betHalf"   class="btn-preset">½</button>
-        <button id="betDouble" class="btn-preset">2X</button>
-        <button id="betMax"    class="btn-preset">Max</button>
-      </div>
-      <div class="bet-adjuster">
+      <div class="bet-pill">
         <button id="betMinus" class="btn-circle-adj">−</button>
-        <div class="bet-amount-wrap">
+        <div class="bet-pill-amount">
           <span class="bet-currency">$</span>
-          <input id="bet" type="number" min="1" max="1000" step="1" value="10"/>
+          <span id="betDisplay" class="bet-value">10</span>
         </div>
         <button id="betPlus" class="btn-circle-adj">+</button>
+      </div>
+      <div class="bet-slider-wrap">
+        <input id="betSlider" type="range" class="bet-slider" min="0" max="100"/>
       </div>
     </div>
 
     <!-- Action row -->
     <div class="action-row">
-      <button id="start" class="btn-action btn-start">Start Round</button>
+      <div class="start-row">
+        <button id="start"  class="btn-action btn-start">Start</button>
+        <button id="start2" class="btn-action btn-start">Start</button>
+      </div>
       <div class="action-sub">
         <button id="reset" class="btn-ghost">Reset</button>
         <button id="cash"  class="btn-action btn-cash" disabled>Cash Out</button>
@@ -674,7 +656,7 @@ const MYSTERY_WEIGHTS = [
 
 
 const FRUIT_SVG = {
-  watermelon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%"><g transform="rotate(180,50,50)"><path d="M10 42 Q50 8 90 42 L50 90 Z" fill="#4caf50"/><path d="M14 43 Q50 13 86 43 L50 86 Z" fill="#c8f0b0"/><path d="M19 45 Q50 19 81 45 L50 82 Z" fill="#e8404a"/><ellipse cx="50" cy="57" rx="2.5" ry="4" fill="#1a1a2e"/><ellipse cx="38" cy="63" rx="2.5" ry="4" fill="#1a1a2e" transform="rotate(-12 38 63)"/><ellipse cx="62" cy="63" rx="2.5" ry="4" fill="#1a1a2e" transform="rotate(12 62 63)"/><ellipse cx="43" cy="48" rx="2" ry="3.5" fill="#1a1a2e" transform="rotate(-8 43 48)"/><ellipse cx="57" cy="48" rx="2" ry="3.5" fill="#1a1a2e" transform="rotate(8 57 48)"/></g></svg>`,
+  watermelon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-22 -12 424 286" width="100%" height="100%"><path fill="#ff2a2a" d="M359.86,134.32A165,165,0,1,1,52.25,14.84l95.87,208.89Z"/><rect fill="#ff2a2a" x="80.42" y="74.26" width="231.83" height="95" transform="translate(335.26 306.35) rotate(-158.77)"/><rect fill="#ff2a2a" x="52.77" y="27.37" width="52.6" height="57.79" transform="translate(132.41 137.33) rotate(-158.77)"/><rect fill="#ff2a2a" x="55.29" y="19.23" width="13.88" height="13.88" transform="translate(110.76 73.08) rotate(-158.77)"/><rect fill="#ff2a2a" x="50.65" y="19.79" width="27.06" height="8.6" transform="translate(115.28 69.78) rotate(-158.77)"/><rect fill="#ff2a2a" x="51.99" y="15.17" width="2.02" height="1.05" transform="translate(96.72 49.52) rotate(-158.77)"/><rect fill="#ff2a2a" x="295.13" y="122.19" width="66.34" height="3.54" transform="translate(589.45 358.37) rotate(-158.77)"/><rect fill="#ff2a2a" x="287.34" y="119.81" width="58.21" height="46.9" transform="translate(559.55 391.37) rotate(-158.77)"/><rect fill="#ff2a2a" x="335.56" y="130.87" width="18.77" height="12.36" transform="translate(616.86 389.7) rotate(-158.77)"/><rect fill="#ff2a2a" x="138.83" y="149.01" width="24.51" height="75.06" transform="translate(224.39 415.12) rotate(-158.77)"/><rect fill="#ff2a2a" x="80.64" y="131.32" width="74.38" height="44.26" transform="translate(172.12 339.14) rotate(-158.77)"/><rect fill="#ff2a2a" x="118.56" y="179.71" width="26.21" height="19.66" transform="translate(185.77 413.89) rotate(-158.77)"/><rect fill="#ff2a2a" x="158.97" y="146.71" width="27.32" height="83.23" transform="translate(265.35 426.38) rotate(-158.77)"/><rect fill="#ff2a2a" x="168.96" y="167.41" width="63.49" height="51.23" transform="translate(317.9 445.62) rotate(-158.77)"/><path fill="none" stroke="#ff6b6b" stroke-width="18" d="M369.18,137.94A175,175,0,1,1,42.93,11.22"/><path fill="none" stroke="#b9e4b1" stroke-width="22" d="M383.16,143.37c-38,97.82-148.08,146.32-245.9,108.32S-9,103.61,28.94,5.79"/><path fill="none" stroke="#1b7f2a" stroke-width="12" d="M392.49,147c-40,103-155.88,154-258.85,114s-154-155.87-114-258.84"/><ellipse fill="#111" cx="254.9" cy="159.74" rx="10" ry="6" transform="translate(13.71 339.51) rotate(-68.77)"/><ellipse fill="#111" cx="210.06" cy="164.7" rx="9.14" ry="6" transform="translate(-19.52 300.88) rotate(-68.77)"/><ellipse fill="#111" cx="182.7" cy="124.66" rx="9.14" ry="6" transform="translate(0.34 249.83) rotate(-68.77)"/><ellipse fill="#111" cx="138.79" cy="127.22" rx="9.14" ry="6" transform="translate(-30.05 210.54) rotate(-68.77)"/><ellipse fill="#111" cx="108.13" cy="95.7" rx="9.14" ry="6" transform="translate(-20.23 161.84) rotate(-68.77)"/><ellipse fill="#111" cx="220.59" cy="109.97" rx="9.14" ry="6" transform="translate(38.22 275.78) rotate(-68.77)"/><ellipse fill="#111" cx="177.29" cy="83.35" rx="9.14" ry="6" transform="translate(35.41 218.43) rotate(-68.77)"/><ellipse fill="#111" cx="127.37" cy="73.76" rx="9.14" ry="6" transform="translate(12.5 165.79) rotate(-68.77)"/><ellipse fill="#111" cx="273.21" cy="140.21" rx="9.14" ry="6" transform="translate(43.59 344.12) rotate(-68.77)"/></svg>`,
   lemon:       `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%"><ellipse cx="50" cy="53" rx="32" ry="28" fill="#f5d923"/><ellipse cx="20" cy="53" rx="10" ry="8" fill="#f5d923"/><ellipse cx="80" cy="53" rx="10" ry="8" fill="#f5d923"/><ellipse cx="40" cy="43" rx="10" ry="7" fill="#fbe96a" opacity="0.55"/><line x1="50" y1="25" x2="50" y2="33" stroke="#4a7c3f" stroke-width="3" stroke-linecap="round"/><ellipse cx="58" cy="27" rx="9" ry="4.5" fill="#5cad50" transform="rotate(25 58 27)"/></svg>`,
   orange:      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="54" r="32" fill="#f47c20"/><circle cx="40" cy="42" r="11" fill="#f9a95a" opacity="0.45"/><line x1="50" y1="22" x2="50" y2="29" stroke="#4a7c3f" stroke-width="3.5" stroke-linecap="round"/><ellipse cx="58" cy="24" rx="9" ry="4.5" fill="#5cad50" transform="rotate(20 58 24)"/></svg>`,
   grapes:      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%"><line x1="50" y1="16" x2="50" y2="26" stroke="#4a7c3f" stroke-width="3" stroke-linecap="round"/><ellipse cx="56" cy="20" rx="8" ry="4.5" fill="#5cad50" transform="rotate(30 56 20)"/><circle cx="38" cy="38" r="11" fill="#7b3fbe"/><circle cx="62" cy="38" r="11" fill="#7b3fbe"/><circle cx="27" cy="55" r="11" fill="#7b3fbe"/><circle cx="50" cy="55" r="11" fill="#7b3fbe"/><circle cx="73" cy="55" r="11" fill="#7b3fbe"/><circle cx="38" cy="72" r="11" fill="#7b3fbe"/><circle cx="62" cy="72" r="11" fill="#7b3fbe"/><circle cx="50" cy="87" r="11" fill="#7b3fbe"/><circle cx="34" cy="33" r="3.5" fill="#a87de0" opacity="0.55"/><circle cx="58" cy="33" r="3.5" fill="#a87de0" opacity="0.55"/><circle cx="23" cy="50" r="3.5" fill="#a87de0" opacity="0.55"/><circle cx="46" cy="50" r="3.5" fill="#a87de0" opacity="0.55"/><circle cx="69" cy="50" r="3.5" fill="#a87de0" opacity="0.55"/><circle cx="34" cy="67" r="3.5" fill="#a87de0" opacity="0.55"/><circle cx="58" cy="67" r="3.5" fill="#a87de0" opacity="0.55"/><circle cx="46" cy="82" r="3.5" fill="#a87de0" opacity="0.55"/></svg>`,
@@ -777,8 +759,12 @@ function syncHUD(){
 }
 
 /* ------------------ Spawning ------------------ */
+const LANE_CLEAR_Y = 130; // px from top — lane is blocked while a fruit is above this
 function makeFruit(){
-  const lane = Math.floor(rng()*LANES);
+  const blocked = new Set(fruits.filter(f => f.y < LANE_CLEAR_Y).map(f => f.lane));
+  const free = Array.from({length:LANES},(_,i)=>i).filter(i=>!blocked.has(i));
+  if(free.length === 0) return null;
+  const lane = free[Math.floor(rng()*free.length)];
   const x = laneX(lane);
   const roll = rng();
 
@@ -807,6 +793,7 @@ function makeFruit(){
 }
 function spawnFruit(){
   const f = makeFruit();
+  if(!f) return;
   const div = document.createElement('button');
   div.className = (f.kind==='fruit' ? 'fruit' : 'loot');
   div.style.left = f.x+'px'; div.style.top = f.y+'px';
@@ -908,7 +895,7 @@ function crashRound(){
 function startRound(){
   if(status!=='idle') return;
   ensureAudio();
-  bet = clamp(Math.floor(Number(document.getElementById('bet').value||0)),1,MAX_BET);
+  bet = clamp(bet, 1, MAX_BET);
   if(balance < bet){ showHint('Not enough balance','bad'); return; }
   balance -= bet;
 
@@ -960,6 +947,7 @@ function loop(ts){
 
 /* ------------------ UI wiring ------------------ */
 document.getElementById('start').addEventListener('click', ()=>{ ensureAudio(); startRound(); });
+document.getElementById('start2').addEventListener('click', ()=>{ ensureAudio(); startRound(); });
 document.getElementById('cash').addEventListener('click', cashOut);
 document.getElementById('reset').addEventListener('click', resetGame);
 document.getElementById('rotateSeed').addEventListener('click', ()=>{
@@ -976,20 +964,15 @@ document.getElementById('infoBtn').addEventListener('click', ()=>{
 });
 document.getElementById('infoClose').addEventListener('click', ()=>{ infoOverlay.classList.add('hidden'); });
 infoOverlay.addEventListener('click', e=>{ if(e.target===infoOverlay) infoOverlay.classList.add('hidden'); });
+function sliderToBet(s){ return Math.round(Math.exp(Number(s)/100*Math.log(MAX_BET))); }
+function betToSlider(b){ return Math.round(Math.log(Math.max(1,b))/Math.log(MAX_BET)*100); }
 function syncBetInput(){
-  document.getElementById('bet').value = String(bet);
+  document.getElementById('betDisplay').textContent = String(bet);
+  const pct = betToSlider(bet);
+  const sl = document.getElementById('betSlider');
+  sl.value = pct;
+  sl.style.setProperty('--fill', pct+'%');
 }
-document.getElementById('bet').addEventListener('input', ()=>{
-  bet = clamp(Math.floor(document.getElementById('bet').value||0),1,MAX_BET);
-});
-['betHalf','betDouble','betMax'].forEach(id=>{
-  document.getElementById(id).addEventListener('click', ()=>{
-    if(id==='betHalf')   bet = Math.max(1, Math.floor(bet/2));
-    if(id==='betDouble') bet = Math.min(MAX_BET, bet*2);
-    if(id==='betMax')    bet = Math.min(MAX_BET, Math.max(1, balance));
-    syncBetInput();
-  });
-});
 document.getElementById('betMinus').addEventListener('click', ()=>{
   const step = Math.max(1, Math.round(bet * 0.1));
   bet = Math.max(1, bet - step);
@@ -1000,11 +983,18 @@ document.getElementById('betPlus').addEventListener('click', ()=>{
   bet = Math.min(MAX_BET, bet + step);
   syncBetInput();
 });
+document.getElementById('betSlider').addEventListener('input', ()=>{
+  const sl = document.getElementById('betSlider');
+  bet = sliderToBet(sl.value);
+  sl.style.setProperty('--fill', sl.value+'%');
+  document.getElementById('betDisplay').textContent = String(bet);
+});
 arena.addEventListener('pointerdown', ()=>ensureAudio());
 
 /* init */
 sha256hex(serverSeed).then(h=>{ serverHash=h; syncHUD(); });
 syncHUD();
+syncBetInput();
 
 /* Scale canvas to fit window */
 function scaleGame(){
