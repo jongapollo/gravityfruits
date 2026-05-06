@@ -528,6 +528,17 @@
     position:absolute; width:12px; height:12px;
     border-radius:4px; pointer-events:none;
   }
+  @keyframes arena-shake{
+    0%  { transform:translateX(0); }
+    15% { transform:translateX(-10px); }
+    30% { transform:translateX(10px); }
+    45% { transform:translateX(-7px); }
+    60% { transform:translateX(7px); }
+    75% { transform:translateX(-4px); }
+    90% { transform:translateX(4px); }
+    100%{ transform:translateX(0); }
+  }
+  .arena-shake{ animation:arena-shake .45s ease-out; }
 </style>
 </head>
 <body>
@@ -890,6 +901,10 @@ function crashRound(){
   if(paid>0){ balance += paid; showHint(`Crash — Paid ${lockedMin.toFixed(2)}× → ${fmt(paid)}`,'bad'); }
   else { showHint('Crash!','bad'); }
   sfx.crash();
+  fruits.forEach(f=>{ if(f.elem) f.elem.style.filter='grayscale(1) brightness(0.5)'; });
+  const aw = document.querySelector('.arena-wrap');
+  aw.classList.add('arena-shake');
+  aw.addEventListener('animationend', ()=>aw.classList.remove('arena-shake'), {once:true});
   stop();
 }
 
