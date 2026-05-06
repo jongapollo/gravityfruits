@@ -227,8 +227,7 @@
     display:flex;
     gap:16px;
   }
-  .action-sub .btn-ghost{ flex:1; }
-  .action-sub .btn-cash{ flex:2; min-width:unset; }
+  .action-sub .btn-cash{ flex:1; min-width:unset; }
   .btn-action{
     border:0;
     border-radius:60px;
@@ -264,8 +263,8 @@
 
   /* Cash Out — secondary large */
   .btn-cash{
-    padding:28px 56px;
-    font-size:32px;
+    padding:28px 72px;
+    font-size:36px;
     background:linear-gradient(135deg,#15803d,#22c55e);
     color:#052e12;
     box-shadow:0 8px 36px #22c55e40;
@@ -304,11 +303,8 @@
     gap:10px;
     align-items:center;
   }
-  .credit-row .pill{ justify-content:space-between; }
-  .credit-row .pill.p-bal{ flex:2; }
-  .credit-row .pill.p-nonce{ flex:1; }
+  .credit-row .pill{ flex:1; justify-content:space-between; }
   .pill.p-bal b{ color:var(--gold); font-size:44px; }
-  .pill.p-nonce b{ color:var(--gold); font-size:44px; }
 
   /* ── Provably fair ── */
   .fair-row{
@@ -587,19 +583,16 @@
     <!-- Action row -->
     <div class="action-row">
       <div class="start-row">
-        <button id="start"  class="btn-action btn-start">Start</button>
-        <button id="start2" class="btn-action btn-start">Start</button>
+        <button id="start" class="btn-action btn-start">Start</button>
       </div>
       <div class="action-sub">
-        <button id="reset" class="btn-ghost">Reset</button>
-        <button id="cash"  class="btn-action btn-cash" disabled>Cash Out</button>
+        <button id="cash" class="btn-action btn-cash" disabled>Cash Out</button>
       </div>
     </div>
 
     <!-- Credit row -->
     <div class="credit-row">
       <div class="pill p-bal">Balance <b id="bal">$1,000</b></div>
-      <div class="pill p-nonce">Nonce <b id="nonce">0</b></div>
     </div>
 
   </div>
@@ -769,7 +762,6 @@ function syncHUD(){
   document.getElementById('multShow').textContent = mult.toFixed(2)+'×';
   const bonus = Math.min(combo*COMBO_STEP, COMBO_CAP);
   document.getElementById('comboShow').textContent = `${combo} (+${bonus.toFixed(2)}×)`;
-  document.getElementById('nonce').textContent    = String(nonce);
   document.getElementById('seedHash').textContent = serverHash;
 }
 
@@ -912,7 +904,8 @@ function crashRound(){
 
 /* ------------------ Round lifecycle ------------------ */
 function startRound(){
-  if(status!=='idle') return;
+  if(status==='running') return;
+  if(status!=='idle') resetGame();
   ensureAudio();
   bet = clamp(bet, 1, MAX_BET);
   if(balance < bet){ showHint('Not enough balance','bad'); return; }
@@ -966,9 +959,7 @@ function loop(ts){
 
 /* ------------------ UI wiring ------------------ */
 document.getElementById('start').addEventListener('click', ()=>{ ensureAudio(); startRound(); });
-document.getElementById('start2').addEventListener('click', ()=>{ ensureAudio(); startRound(); });
 document.getElementById('cash').addEventListener('click', cashOut);
-document.getElementById('reset').addEventListener('click', resetGame);
 document.getElementById('rotateSeed').addEventListener('click', ()=>{
   serverSeed = Math.random().toString(36).slice(2);
   sha256hex(serverSeed).then(h=>{ serverHash=h; syncHUD(); });
