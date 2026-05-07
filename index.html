@@ -467,6 +467,36 @@
     line-height:1.6;
   }
 
+  /* ── Settings toggles ── */
+  .toggle-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:8px 0;
+  }
+  .toggle-label{ font-size:32px; color:#ffffff; font-weight:700; }
+  .toggle-btn{
+    border:5px solid var(--line);
+    background:#1e0830;
+    color:var(--label);
+    border-radius:60px;
+    font-family:'Montserrat',sans-serif;
+    font-size:28px;
+    font-weight:800;
+    padding:14px 40px;
+    cursor:pointer;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    min-width:140px;
+    text-align:center;
+    transition:background .15s, border-color .15s, color .15s;
+  }
+  .toggle-btn.on{
+    background:linear-gradient(135deg,#15803d,#22c55e);
+    border-color:#22c55e;
+    color:#052e12;
+  }
+
   /* ── In-arena objects ── */
   .fruit,.loot{
     position:absolute;
@@ -545,7 +575,7 @@
   <!-- Title bar -->
   <div class="titlebar">
     <h1>🍉 GRAVITY FRUITS</h1>
-    <button id="infoBtn" class="btn-info">
+    <button id="infoBtn" class="btn-info" aria-label="Game info">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="22 17 20 30"><path d="M35.99,24.4c0,2.09-1.79,3.79-3.99,3.79s-3.99-1.7-3.99-3.79,1.79-3.79,3.99-3.79,3.99,1.7,3.99,3.79ZM35.08,43.39h-6.08c-.3,0-.55-.24-.55-.54v-12.07c0-.29.24-.53.53-.53h6.08c.3,0,.55.24.55.54v12.07c0,.29-.24.53-.53.53Z"/></svg>
     </button>
   </div>
@@ -568,25 +598,25 @@
     <!-- Bet section -->
     <div class="bet-section">
       <div class="bet-pill">
-        <button id="betMinus" class="btn-circle-adj">−</button>
+        <button id="betMinus" class="btn-circle-adj" aria-label="Decrease bet">−</button>
         <div class="bet-pill-amount">
           <span class="bet-currency">$</span>
           <span id="betDisplay" class="bet-value">10</span>
         </div>
-        <button id="betPlus" class="btn-circle-adj">+</button>
+        <button id="betPlus" class="btn-circle-adj" aria-label="Increase bet">+</button>
       </div>
       <div class="bet-slider-wrap">
-        <input id="betSlider" type="range" class="bet-slider" min="0" max="100"/>
+        <input id="betSlider" type="range" class="bet-slider" min="0" max="100" aria-label="Bet amount"/>
       </div>
     </div>
 
     <!-- Action row -->
     <div class="action-row">
       <div class="start-row">
-        <button id="start" class="btn-action btn-start">Start</button>
+        <button id="start" class="btn-action btn-start" aria-label="Start round">Start</button>
       </div>
       <div class="action-sub">
-        <button id="cash" class="btn-action btn-cash" disabled>Cash Out</button>
+        <button id="cash" class="btn-action btn-cash" disabled aria-label="Cash out">Cash Out</button>
       </div>
     </div>
 
@@ -599,16 +629,41 @@
 
   <!-- Provably fair — single compact row -->
   <div class="fair-row">
-    <button id="rotateSeed" class="btn-ghost btn-rotate"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M32.93,11.98c-7.13.05-13.38,3.82-16.89,9.48l-4.21-4.21c-.34-.34-.92-.1-.92.38v13.36c0,.3.24.54.54.54h13.36c.48,0,.72-.58.38-.92l-5.3-5.3c2.44-4.79,7.42-8.08,13.17-8.08,8.09,0,14.73,6.58,14.79,14.67.06,8.21-6.58,14.89-14.78,14.89-6.41,0-11.87-4.09-13.92-9.8-.08-.21-.28-.35-.5-.35h-4.37c-.36,0-.61.34-.52.68,2.33,8.48,10.09,14.71,19.31,14.71,11.06,0,20.02-8.97,20.02-20.02,0-11.08-9.07-20.1-20.16-20.02Z"/></svg></button>
+    <button id="rotateSeed" class="btn-ghost btn-rotate" aria-label="Rotate seed"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M32.93,11.98c-7.13.05-13.38,3.82-16.89,9.48l-4.21-4.21c-.34-.34-.92-.1-.92.38v13.36c0,.3.24.54.54.54h13.36c.48,0,.72-.58.38-.92l-5.3-5.3c2.44-4.79,7.42-8.08,13.17-8.08,8.09,0,14.73,6.58,14.79,14.67.06,8.21-6.58,14.89-14.78,14.89-6.41,0-11.87-4.09-13.92-9.8-.08-.21-.28-.35-.5-.35h-4.37c-.36,0-.61.34-.52.68,2.33,8.48,10.09,14.71,19.31,14.71,11.06,0,20.02-8.97,20.02-20.02,0-11.08-9.07-20.1-20.16-20.02Z"/></svg></button>
     <div class="fair-pill fair-pill-hash">
       Seed <span id="seedHash" class="fair-mono">—</span>
     </div>
     <div class="fair-pill">
       Client <input id="clientSeed" class="fair-input" value="player"/>
     </div>
-    <button id="menuBtn" class="btn-ghost btn-rotate"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill-rule="evenodd" d="M22.09,22.65h19.82c1.14,0,2.07.93,2.07,2.07v.03c0,1.14-.93,2.07-2.07,2.07h-19.82c-1.14,0-2.07-.93-2.07-2.07v-.03c0-1.14.93-2.07,2.07-2.07ZM22.09,30.15h19.82c1.14,0,2.07.93,2.07,2.07h0c0,1.14-.93,2.07-2.07,2.07h-19.82c-1.14,0-2.07-.93-2.07-2.07h0c0-1.14.93-2.07,2.07-2.07ZM22.09,37.21h19.82c1.14,0,2.07.93,2.07,2.07h0c0,1.14-.93,2.07-2.07,2.07h-19.82c-1.14,0-2.07-.93-2.07-2.07h0c0-1.14.93-2.07,2.07-2.07Z"/></svg></button>
+    <button id="menuBtn" class="btn-ghost btn-rotate" aria-label="Settings"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill-rule="evenodd" d="M22.09,22.65h19.82c1.14,0,2.07.93,2.07,2.07v.03c0,1.14-.93,2.07-2.07,2.07h-19.82c-1.14,0-2.07-.93-2.07-2.07v-.03c0-1.14.93-2.07,2.07-2.07ZM22.09,30.15h19.82c1.14,0,2.07.93,2.07,2.07h0c0,1.14-.93,2.07-2.07,2.07h-19.82c-1.14,0-2.07-.93-2.07-2.07h0c0-1.14.93-2.07,2.07-2.07ZM22.09,37.21h19.82c1.14,0,2.07.93,2.07,2.07h0c0,1.14-.93,2.07-2.07,2.07h-19.82c-1.14,0-2.07-.93-2.07-2.07h0c0-1.14.93-2.07,2.07-2.07Z"/></svg></button>
   </div>
 
+
+  <!-- Settings overlay -->
+  <div id="menuOverlay" class="info-overlay hidden">
+    <div class="info-sheet">
+      <div class="info-header">
+        <div class="info-header-title">Settings</div>
+        <button id="menuClose" class="info-close" aria-label="Close settings"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M55.74,48.49c.54.54.54,1.4,0,1.94l-5.18,5.18c-.54.54-1.4.54-1.94,0l-16.58-16.58-16.58,16.58c-.54.54-1.4.54-1.94,0l-5.18-5.18c-.54-.54-.54-1.4,0-1.94l16.58-16.58L8.35,15.34c-.54-.54-.54-1.4,0-1.94l5.18-5.18c.54-.54,1.4-.54,1.94,0l16.58,16.58,16.58-16.58c.54-.54,1.4-.54,1.94,0l5.18,5.18c.54.54.54,1.4,0,1.94l-16.58,16.58,16.58,16.58Z"/></svg></button>
+      </div>
+      <div class="info-section">
+        <div class="info-section-title">Accessibility</div>
+        <div class="toggle-row">
+          <span class="toggle-label">Sound</span>
+          <button id="toggleSound" class="toggle-btn on" aria-pressed="true">ON</button>
+        </div>
+        <div class="toggle-row">
+          <span class="toggle-label">Haptic Feedback</span>
+          <button id="toggleHaptic" class="toggle-btn on" aria-pressed="true">ON</button>
+        </div>
+        <div class="toggle-row">
+          <span class="toggle-label">Reduce Motion</span>
+          <button id="toggleMotion" class="toggle-btn" aria-pressed="false">OFF</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Info overlay -->
   <div id="infoOverlay" class="info-overlay hidden">
@@ -618,7 +673,7 @@
           <div class="info-header-title">Game Info</div>
           <div class="info-header-sub">Gravity Frut</div>
         </div>
-        <button id="infoClose" class="info-close"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M55.74,48.49c.54.54.54,1.4,0,1.94l-5.18,5.18c-.54.54-1.4.54-1.94,0l-16.58-16.58-16.58,16.58c-.54.54-1.4.54-1.94,0l-5.18-5.18c-.54-.54-.54-1.4,0-1.94l16.58-16.58L8.35,15.34c-.54-.54-.54-1.4,0-1.94l5.18-5.18c.54-.54,1.4-.54,1.94,0l16.58,16.58,16.58-16.58c.54-.54,1.4-.54,1.94,0l5.18,5.18c.54.54.54,1.4,0,1.94l-16.58,16.58,16.58,16.58Z"/></svg></button>
+        <button id="infoClose" class="info-close" aria-label="Close game info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M55.74,48.49c.54.54.54,1.4,0,1.94l-5.18,5.18c-.54.54-1.4.54-1.94,0l-16.58-16.58-16.58,16.58c-.54.54-1.4.54-1.94,0l-5.18-5.18c-.54-.54-.54-1.4,0-1.94l16.58-16.58L8.35,15.34c-.54-.54-.54-1.4,0-1.94l5.18-5.18c.54-.54,1.4-.54,1.94,0l16.58,16.58,16.58-16.58c.54-.54,1.4-.54,1.94,0l5.18,5.18c.54.54.54,1.4,0,1.94l-16.58,16.58,16.58,16.58Z"/></svg></button>
       </div>
       <div class="info-section">
         <div class="info-section-title">Mystery Box</div>
@@ -694,8 +749,10 @@ function hex32(h){ return parseInt(h.slice(0,8),16)>>>0; }
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 let actx=null;
 function ensureAudio(){ if(!actx) actx=new AudioCtx(); }
+let soundOn=true, hapticOn=true, reduceMotion=false;
+
 function beep(freq=660,dur=0.06,type='triangle',gain=0.08){
-  if(!actx) return; const t=actx.currentTime; const o=actx.createOscillator(), g=actx.createGain();
+  if(!actx||!soundOn) return; const t=actx.currentTime; const o=actx.createOscillator(), g=actx.createGain();
   o.type=type; o.frequency.setValueAtTime(freq,t);
   g.gain.setValueAtTime(gain,t); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
   o.connect(g).connect(actx.destination); o.start(t); o.stop(t+dur);
@@ -753,8 +810,10 @@ function particleBurst(x,y,color='#ffd54a',n=14){
   }
 }
 function showHint(text, cls='ok', ms=1100){
-  hint.textContent=text; hint.className='hint '+cls; hint.style.display='block';
-  setTimeout(()=>{ if(hint.textContent===text) hint.style.display='none'; }, ms);
+  const icons={ok:'✓ ', bad:'✗ ', warn:'⚠ '};
+  const full=(icons[cls]||'')+text;
+  hint.textContent=full; hint.className='hint '+cls; hint.style.display='block';
+  setTimeout(()=>{ if(hint.textContent===full) hint.style.display='none'; }, ms);
 }
 function setStatus(s){ status=s; }
 function syncHUD(){
@@ -827,7 +886,7 @@ function updatePositions(dt){
 /* ------------------ Reveal ------------------ */
 function triggerReveal(ms){
   sfx.reveal();
-  if (navigator.vibrate) navigator.vibrate([15,30,15]);
+  if (hapticOn && navigator.vibrate) navigator.vibrate([15,30,15]);
   const now=performance.now(); revealUntil = now + ms;
   for(const f of fruits){
     if(f.kind!=='fruit') continue;
@@ -852,7 +911,7 @@ function onClickFruit(id){
     combo = 0;
     const outcome = pickWeighted(MYSTERY_WEIGHTS);
     sfx.loot(); particleBurst(f.x,f.y,'#facc15', 16);
-    if (navigator.vibrate) navigator.vibrate([20,40,20]);
+    if (hapticOn && navigator.vibrate) navigator.vibrate([20,40,20]);
     if(outcome==='freeze'){
       lockedMin = Math.max(lockedMin, mult);
       showHint(`Freeze at ${lockedMin.toFixed(2)}×`, 'ok');
@@ -874,7 +933,7 @@ function onClickFruit(id){
 
   sfx.pop();
   particleBurst(f.x,f.y,'#ffd54a', 18);
-  if (navigator.vibrate) navigator.vibrate([18,28,18]);
+  if (hapticOn && navigator.vibrate) navigator.vibrate([18,28,18]);
 
   if(isCrash){ crashRound(); return; }
 
@@ -896,9 +955,11 @@ function crashRound(){
   else { showHint('Crash!','bad'); }
   sfx.crash();
   fruits.forEach(f=>{ if(f.elem) f.elem.style.filter='grayscale(1) brightness(0.5)'; });
-  const aw = document.querySelector('.arena-wrap');
-  aw.classList.add('arena-shake');
-  aw.addEventListener('animationend', ()=>aw.classList.remove('arena-shake'), {once:true});
+  if(!reduceMotion){
+    const aw = document.querySelector('.arena-wrap');
+    aw.classList.add('arena-shake');
+    aw.addEventListener('animationend', ()=>aw.classList.remove('arena-shake'), {once:true});
+  }
   stop();
 }
 
@@ -965,6 +1026,25 @@ document.getElementById('rotateSeed').addEventListener('click', ()=>{
   sha256hex(serverSeed).then(h=>{ serverHash=h; syncHUD(); });
   nonce = 0;
 });
+
+/* Settings menu */
+const menuOverlay = document.getElementById('menuOverlay');
+document.getElementById('menuBtn').addEventListener('click', ()=>{ menuOverlay.classList.remove('hidden'); });
+document.getElementById('menuClose').addEventListener('click', ()=>{ menuOverlay.classList.add('hidden'); });
+menuOverlay.addEventListener('click', e=>{ if(e.target===menuOverlay) menuOverlay.classList.add('hidden'); });
+
+function wireToggle(id, getter, setter){
+  const btn = document.getElementById(id);
+  btn.addEventListener('click', ()=>{
+    setter(!getter());
+    btn.classList.toggle('on', getter());
+    btn.textContent = getter() ? 'ON' : 'OFF';
+    btn.setAttribute('aria-pressed', String(getter()));
+  });
+}
+wireToggle('toggleSound',  ()=>soundOn,      v=>{ soundOn=v; });
+wireToggle('toggleHaptic', ()=>hapticOn,     v=>{ hapticOn=v; });
+wireToggle('toggleMotion', ()=>reduceMotion, v=>{ reduceMotion=v; });
 
 /* Info modal */
 const infoOverlay = document.getElementById('infoOverlay');
