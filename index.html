@@ -471,31 +471,36 @@
   .toggle-row{
     display:flex;
     align-items:center;
-    justify-content:space-between;
+    gap:28px;
     padding:8px 0;
   }
   .toggle-label{ font-size:32px; color:#ffffff; font-weight:700; }
   .toggle-btn{
-    border:5px solid var(--line);
-    background:#1e0830;
-    color:var(--label);
-    border-radius:60px;
-    font-family:'Montserrat',sans-serif;
-    font-size:28px;
-    font-weight:800;
-    padding:14px 40px;
+    flex-shrink:0;
+    position:relative;
+    width:124px;
+    height:68px;
+    border-radius:34px;
+    background:#3a3a4a;
+    border:none;
     cursor:pointer;
-    text-transform:uppercase;
-    letter-spacing:1px;
-    min-width:140px;
-    text-align:center;
-    transition:background .15s, border-color .15s, color .15s;
+    padding:0;
+    transition:background .2s;
   }
-  .toggle-btn.on{
-    background:linear-gradient(135deg,#15803d,#22c55e);
-    border-color:#22c55e;
-    color:#052e12;
+  .toggle-btn::after{
+    content:'';
+    position:absolute;
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    background:#fff;
+    top:6px;
+    left:6px;
+    transition:left .2s;
+    box-shadow:0 2px 8px #0006;
   }
+  .toggle-btn.on{ background:#22c55e; }
+  .toggle-btn.on::after{ left:62px; }
 
   /* ── In-arena objects ── */
   .fruit,.loot{
@@ -650,16 +655,16 @@
       <div class="info-section">
         <div class="info-section-title">Accessibility</div>
         <div class="toggle-row">
+          <button id="toggleSound" class="toggle-btn on" aria-label="Sound" aria-pressed="true"></button>
           <span class="toggle-label">Sound</span>
-          <button id="toggleSound" class="toggle-btn on" aria-pressed="true">ON</button>
         </div>
         <div class="toggle-row">
+          <button id="toggleHaptic" class="toggle-btn on" aria-label="Haptic Feedback" aria-pressed="true"></button>
           <span class="toggle-label">Haptic Feedback</span>
-          <button id="toggleHaptic" class="toggle-btn on" aria-pressed="true">ON</button>
         </div>
         <div class="toggle-row">
+          <button id="toggleMotion" class="toggle-btn" aria-label="Reduce Motion" aria-pressed="false"></button>
           <span class="toggle-label">Reduce Motion</span>
-          <button id="toggleMotion" class="toggle-btn" aria-pressed="false">OFF</button>
         </div>
       </div>
     </div>
@@ -1038,7 +1043,6 @@ function wireToggle(id, getter, setter){
   btn.addEventListener('click', ()=>{
     setter(!getter());
     btn.classList.toggle('on', getter());
-    btn.textContent = getter() ? 'ON' : 'OFF';
     btn.setAttribute('aria-pressed', String(getter()));
   });
 }
