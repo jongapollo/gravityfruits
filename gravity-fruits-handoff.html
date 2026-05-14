@@ -212,6 +212,7 @@
       <span class="badge">HTML5</span>
       <span class="badge">Browser Game</span>
       <span class="badge">Portrait Mobile</span>
+      <span class="badge">Landscape Support</span>
       <span class="badge">Canvas 910 × 1672 px</span>
     </div>
   </div>
@@ -222,7 +223,7 @@
     <div class="card">
       <p class="desc">Gravity Fruits is a crash/combo mini game where fruits fall from the top of the arena into columns. A multiplier climbs in real time — cash out to bank your winnings or ride it until the game crashes.</p>
       <ol class="steps">
-        <li><span class="step-num">1</span><span class="step-txt">Player sets a bet via preset buttons or manual adjuster</span></li>
+        <li><span class="step-num">1</span><span class="step-txt">Player sets a bet via manual adjuster or slider</span></li>
         <li><span class="step-num">2</span><span class="step-txt">Tap <strong>START</strong> — fruits fall, multiplier climbs</span></li>
         <li><span class="step-num">3</span><span class="step-txt">Tap <strong>CASH OUT</strong> to bank <strong>bet × current multiplier</strong></span></li>
         <li><span class="step-num">4</span><span class="step-txt">Game can crash at any moment — pays nothing on crash</span></li>
@@ -262,21 +263,29 @@
 
   <!-- LAYOUT -->
   <div class="section">
-    <h2>UI Layout</h2>
+    <h2>UI Layout — Portrait</h2>
     <div class="layout-diagram">
-      <div class="ld-row"><span class="ld-num">1</span><div><div class="ld-label">Title Bar</div><div class="ld-sub">Info button (circle, left)</div></div></div>
-      <div class="ld-arena">Game Arena (flex: 1) — HUD strip + falling fruits</div>
-      <div class="ld-row"><span class="ld-num">3</span><div><div class="ld-label">Controls Panel</div><div class="ld-sub">Preset row (½ / 2× / MAX) · Adjuster row (− / $amt / +) · START · CASH OUT · BALANCE</div></div></div>
+      <div class="ld-row"><span class="ld-num">1</span><div><div class="ld-label">Title Bar</div><div class="ld-sub">Game title + Info button (circle, right)</div></div></div>
+      <div class="ld-arena">Game Arena (flex: 1) — HUD strip (MULT / COMBO) + falling fruits</div>
+      <div class="ld-row"><span class="ld-num">3</span><div><div class="ld-label">Controls Panel</div><div class="ld-sub">Adjuster row (− / $amt / +) · Slider · START · CASH OUT · BALANCE</div></div></div>
       <div class="ld-row"><span class="ld-num">4</span><div><div class="ld-label">Provably Fair Row</div><div class="ld-sub">Rotate button · SEED pill · CLIENT pill · Menu button</div></div></div>
     </div>
+
+    <h3>Portrait Button Sizes</h3>
+    <table class="tbl card" style="padding:0;overflow:hidden;margin-bottom:0">
+      <thead><tr><th>Element</th><th>Size</th><th>Style</th></tr></thead>
+      <tbody>
+        <tr><td>START</td><td class="dim">Full-width · 36px font · padding 28px 72px</td><td class="dim">Purple gradient, no border</td></tr>
+        <tr><td>CASH OUT</td><td class="dim">Full-width, same as START</td><td class="dim">Green gradient, text #052e12</td></tr>
+        <tr><td>Adjuster − / +</td><td class="dim">120 × 120 px circle · 72px font</td><td class="dim">#1e0830 bg, 5px --line border</td></tr>
+        <tr><td>Info / Rotate / Menu</td><td class="dim">74 × 74 px circle</td><td class="dim">#1e0830 bg, 5px --line border</td></tr>
+      </tbody>
+    </table>
 
     <h3>Button Demos</h3>
     <div class="btn-row">
       <button class="demo-btn start">Start</button>
       <button class="demo-btn cashout">Cash Out</button>
-      <button class="demo-btn ghost">½</button>
-      <button class="demo-btn ghost">2×</button>
-      <button class="demo-btn ghost">Max</button>
     </div>
 
     <h3>Settings Toggles</h3>
@@ -288,6 +297,63 @@
       <div class="toggle-pill on"><div class="toggle-thumb"></div></div>
       <span class="toggle-lbl">ON — bg <code style="font-size:11px;color:var(--good)">#22c55e</code>, thumb <code style="font-size:11px;color:var(--accent2)">#ffffff</code></span>
     </div>
+  </div>
+
+  <!-- LANDSCAPE LAYOUT -->
+  <div class="section">
+    <h2>UI Layout — Landscape</h2>
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:16px">
+      <div style="display:grid;grid-template-columns:1fr 200px;min-height:220px">
+        <!-- Left: Arena -->
+        <div style="background:linear-gradient(180deg,#09132a,#070e20);display:flex;flex-direction:column;border-right:2px solid var(--line)">
+          <div style="padding:10px 14px;background:linear-gradient(180deg,#200a30,#180622);border-bottom:1px solid var(--line);display:flex;gap:8px">
+            <span style="background:#000;border:2px solid var(--line);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:800;color:var(--gold)">MULT 1.00×</span>
+            <span style="background:#000;border:2px solid var(--line);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:800;color:var(--accent2)">COMBO 0</span>
+          </div>
+          <div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase">Arena (1fr)</div>
+        </div>
+        <!-- Right: Controls sidebar -->
+        <div style="display:flex;flex-direction:column;background:var(--panel2)">
+          <div style="padding:10px 14px;border-bottom:1px solid var(--line);font-size:11px;font-weight:900;color:var(--gold)">🍉 GRAVITY FRUITS</div>
+          <div style="padding:8px 14px;border-bottom:1px solid var(--line);display:flex;gap:6px">
+            <span style="flex:1;background:#000;border:2px solid var(--line);border-radius:20px;padding:4px 8px;font-size:10px;font-weight:800;color:var(--gold);text-align:center">MULT</span>
+            <span style="flex:1;background:#000;border:2px solid var(--line);border-radius:20px;padding:4px 8px;font-size:10px;font-weight:800;color:var(--accent2);text-align:center">COMBO</span>
+          </div>
+          <div style="flex:1;padding:10px 14px;display:flex;flex-direction:column;gap:8px;justify-content:center">
+            <div style="background:#000;border:2px solid var(--line);border-radius:30px;padding:6px 10px;font-size:11px;font-weight:800;text-align:center">$ 10</div>
+            <div style="background:linear-gradient(135deg,#7c3aed,#a855f7);border-radius:30px;padding:8px;font-size:11px;font-weight:900;text-align:center;color:#fff;text-transform:uppercase">Start</div>
+            <div style="background:linear-gradient(135deg,#15803d,#22c55e);border-radius:30px;padding:8px;font-size:11px;font-weight:900;text-align:center;color:#052e12;text-transform:uppercase">Cash Out</div>
+            <div style="font-size:10px;font-weight:700;color:var(--label)">Balance <span style="color:var(--gold);float:right">$1,000</span></div>
+          </div>
+          <div style="padding:8px 14px;border-top:1px solid var(--line);font-size:10px;font-weight:700;color:var(--muted)">↻ SEED… CLI ☰</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Landscape Grid</h3>
+    <div class="card" style="font-family:monospace;font-size:13px;color:var(--accent2);line-height:1.8">
+      grid-template-columns: <span style="color:var(--text)">1fr  540px</span><br>
+      grid-template-rows: <span style="color:var(--text)">auto  auto  1fr  auto</span><br><br>
+      grid-template-areas:<br>
+      &nbsp;&nbsp;<span style="color:var(--label)">"arena  titlebar"</span><br>
+      &nbsp;&nbsp;<span style="color:var(--label)">"arena  lshud"</span> &nbsp;<span style="color:var(--muted)">← MULT + COMBO pills, hidden in portrait</span><br>
+      &nbsp;&nbsp;<span style="color:var(--label)">"arena  controls"</span> <span style="color:var(--muted)">← 1fr, fills remaining height</span><br>
+      &nbsp;&nbsp;<span style="color:var(--label)">"arena  fairrow"</span>
+    </div>
+
+    <h3>Landscape Element Sizes</h3>
+    <table class="tbl card" style="padding:0;overflow:hidden">
+      <thead><tr><th>Element</th><th>Size</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Canvas</td><td class="dim">1672 × 910 px</td><td class="dim">Switched on rotation via JS</td></tr>
+        <tr><td>Right sidebar</td><td class="dim">540px fixed</td><td class="dim">Arena takes remaining 1fr</td></tr>
+        <tr><td>START / CASH OUT</td><td class="dim">32px font · padding 36px</td><td class="dim">Larger to fill panel height</td></tr>
+        <tr><td>Adjuster − / +</td><td class="dim">82 × 82 px · 52px font</td><td class="dim">Same style, scaled down</td></tr>
+        <tr><td>Info / Rotate / Menu</td><td class="dim">56 × 56 px circle</td><td class="dim">Same style, scaled down</td></tr>
+        <tr><td>MULT / COMBO pills</td><td class="dim">flex:1 each</td><td class="dim">Fill row equally, 20px font</td></tr>
+        <tr><td>Fair row text</td><td class="dim">17px</td><td class="dim">—</td></tr>
+      </tbody>
+    </table>
   </div>
 
   <!-- COLOR TOKENS -->

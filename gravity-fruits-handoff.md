@@ -3,8 +3,8 @@
 **Project:** Gravity Fruits  
 **Studio:** Apollo Games  
 **Type:** Browser-based HTML5 mini game (crash/combo)  
-**Target:** Portrait mobile (primary), desktop (scaled)  
-**Canvas:** 910 × 1672 px fixed, scaled to fit window via JS transform
+**Target:** Portrait mobile (primary) · Landscape mobile (rotation) · Desktop (scaled)  
+**Canvas:** 910 × 1672 px (portrait) / 1672 × 910 px (landscape) — scaled to fit window via JS transform
 
 ---
 
@@ -14,8 +14,8 @@ Gravity Fruits is a crash/combo mini game where fruits fall from the top of the 
 
 ### Core Loop
 
-1. Player sets a bet (preset buttons or manual adjuster)
-2. Tap **START** — fruits begin falling, multiplier climbs
+1. Player sets a bet via manual adjuster or slider
+2. Tap **START** — fruits fall, multiplier climbs
 3. Tap **CASH OUT** to bank `bet × current multiplier`, or ride it out
 4. Game can crash at any moment, paying nothing
 5. **START** after a result auto-resets and starts a new round
@@ -44,37 +44,94 @@ Gravity Fruits is a crash/combo mini game where fruits fall from the top of the 
 
 ---
 
-## UI Components
+## UI Layout — Portrait
 
-### Layout (top → bottom)
+```
+┌─────────────────────────────────────────┐
+│  🍉 GRAVITY FRUITS               [ i ]  │  ← Title bar
+├─────────────────────────────────────────┤
+│  MULT 1.00×    COMBO 0 (+0.00×)         │  ← HUD strip
+│ ┌───────────────────────────────────────┐│
+│ │                                       ││
+│ │           ARENA (fruits fall)         ││  ← Game arena (flex: 1)
+│ │                                       ││
+│ └───────────────────────────────────────┘│
+├─────────────────────────────────────────┤
+│  [ − ]        $ 10        [ + ]         │  ← Bet adjuster
+│  ══════●══════════════════════          │  ← Bet slider
+│  [          START         ]             │  ← Primary action
+│  [         CASH OUT       ]             │  ← Secondary action
+│  BALANCE               $1,000          │  ← Credit row
+├─────────────────────────────────────────┤
+│  [↻]   SEED abc123…   CLIENT player [☰] │  ← Provably fair row
+└─────────────────────────────────────────┘
+```
 
-1. **Title bar** — Info button (circle, left)
-2. **Arena wrapper** — HUD strip (MULT / COMBO pills) + game arena
-3. **Controls panel**
-   - Preset row: ½ / 2× / MAX
-   - Adjuster row: − / $amount / +
-   - Action row: START (full-width) then CASH OUT (full-width, same size)
-   - Credit row: BALANCE pill (full width)
-4. **Provably fair row** — Rotate button (left) + SEED pill + CLIENT pill + Menu button (right)
+### Portrait Button Sizes
 
-### Button Sizes
+| Element | Size | Style |
+|---------|------|-------|
+| START | Full-width, `font-size:36px`, `padding:28px 72px` | Purple gradient, no border |
+| CASH OUT | Full-width, same as START | Green gradient, no border, text `#052e12` |
+| Adjuster (− / +) | 120 × 120 px circle, `font-size:72px` | `#1e0830` bg, 5px `--line` border |
+| Info / Rotate / Menu | 74 × 74 px circle | `#1e0830` bg, 5px `--line` border |
 
-| Button | Size | Style |
-|--------|------|-------|
-| START | Full-width, 36px font, 28px 72px padding | Purple gradient, no border |
-| CASH OUT | Full-width, same as START | Green gradient, no border, dark green text |
-| Preset (½ / 2× / MAX) | Ghost pill | Same ghost style |
-| Adjuster (− / +) | 144px circle | 87px font |
-| Info / Rotate / Menu | 74px circle | `#1e0830` bg, 5px `--line` border |
+---
 
-### Settings Overlay
+## UI Layout — Landscape
+
+When the device rotates to landscape, the canvas switches to **1672 × 910 px**. Layout uses CSS Grid named areas — the same HTML, no elements added or removed.
+
+```
+┌──────────────────────────┬──────────────────────┐
+│                          │  🍉 GRAVITY FRUITS [i]│  ← Title bar
+│   MULT 1.00×  COMBO 0    │──────────────────────│  ← HUD pills (right panel)
+│ ┌────────────────────┐   │  [ − ]  $ 10  [ + ]  │
+│ │                    │   │  ══════●══════════    │  ← Controls (flex: 1)
+│ │   ARENA            │   │  [      START      ]  │
+│ │  (fruits fall)     │   │  [    CASH OUT     ]  │
+│ │                    │   │  BALANCE    $1,000    │
+│ └────────────────────┘   │──────────────────────│
+│                          │  [↻] SEED  CLI  [☰]  │  ← Fair row
+└──────────────────────────┴──────────────────────┘
+     ~65% width                  540px fixed
+```
+
+### Landscape Grid Template
+
+```
+grid-template-columns: 1fr 540px
+grid-template-rows:    auto auto 1fr auto
+
+grid-template-areas:
+  "arena  titlebar"
+  "arena  lshud"
+  "arena  controls"
+  "arena  fairrow"
+```
+
+The `.ls-hud` row is a duplicate of the portrait HUD pills — the original HUD strip inside the arena is hidden (`display:none`) in landscape. Both sets stay in sync via JS.
+
+### Landscape Button Sizes
+
+| Element | Size | Style |
+|---------|------|-------|
+| START | Full-width, `font-size:32px`, `padding:36px` | Same purple gradient |
+| CASH OUT | Full-width, same as START | Same green gradient |
+| Adjuster (− / +) | 82 × 82 px circle, `font-size:52px` | Same style |
+| Info / Rotate / Menu | 56 × 56 px circle | Same style |
+| MULT / COMBO pills | `flex:1` each, fills row equally | `font-size:20px` |
+
+---
+
+## Settings Overlay
 
 Three iOS-style toggle switches (124 × 68 px pill, white thumb):
 - **Sound** — guards all SFX (`beep()`)
 - **Haptic Feedback** — guards `navigator.vibrate()`
 - **Reduce Motion** — disables arena-shake CSS animation on crash
 
-Labels on LEFT, toggle on RIGHT.
+Labels on LEFT, toggle on RIGHT. Toggle OFF: bg `#3a3a4a`, border `#55556a`. Toggle ON: bg `#22c55e`.
 
 ---
 
@@ -127,7 +184,6 @@ Labels on LEFT, toggle on RIGHT.
 | Hint — warn | text `#fde68a`, bg `rgba(245,158,11,.12)` |
 | Cashout glow text | `#ff79c6` |
 | Provably fair muted text | `#7a60a0` |
-| Debug panel | bg `#0b1735f0`, border `#3956aa`, text `#cfe6ff` |
 
 ---
 
@@ -159,7 +215,7 @@ Labels on LEFT, toggle on RIGHT.
 ## Assets Included
 
 ```
-index.html              — game (self-contained)
+index.html              — game (self-contained, open in browser)
 fruitsSVG/
   01-cherries.svg
   02-grapes.svg
