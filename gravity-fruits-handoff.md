@@ -154,7 +154,7 @@ Labels on LEFT, toggle on RIGHT. Toggle OFF: bg `#3a3a4a`, border `#55556a`. Tog
 |---------|-------|
 | Body background | `#080010` |
 | Canvas background | `radial-gradient(ellipse at top, #2e0a40 → #110619)` |
-| Outer wrap gradient | `#28083c → #1a0528` |
+| Title bar gradient | `#28083c → #1a0528` |
 | HUD strip gradient | `#200a30 → #180622` |
 | Controls panel gradient | `#1e0a2c → #130720` |
 | Arena inner gradient | `#09132a → #070e20` |
@@ -167,7 +167,7 @@ Labels on LEFT, toggle on RIGHT. Toggle OFF: bg `#3a3a4a`, border `#55556a`. Tog
 | CASH OUT text | `#052e12` |
 | Bet amount pill bg | `#000000` |
 | Toggle OFF bg / border | `#3a3a4a` / `#55556a` |
-| Toggle ON bg | `#22c55e` |
+| Toggle ON bg / border | `#22c55e` / `#1fa34c` |
 | Toggle thumb | `#ffffff` |
 | Fruit cell bg / border | `#0b1735aa` / `#243354` |
 | Loot cell bg / border | `#1f2d55cc` / `#5a79ff55` |
@@ -208,7 +208,7 @@ Labels on LEFT, toggle on RIGHT. Toggle OFF: bg `#3a3a4a`, border `#55556a`. Tog
 
 ```
 index.html              — game (self-contained, open in browser)
-fruitsSVG/
+fruitsSVG/              — source SVG files (embedded inline in game JS, not loaded at runtime)
   01-cherries.svg
   02-grapes.svg
   watermelon-remake.svg

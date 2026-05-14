@@ -295,7 +295,7 @@
     </div>
     <div class="toggle-demo" style="margin-top:10px">
       <div class="toggle-pill on"><div class="toggle-thumb"></div></div>
-      <span class="toggle-lbl">ON — bg <code style="font-size:11px;color:var(--good)">#22c55e</code>, thumb <code style="font-size:11px;color:var(--accent2)">#ffffff</code></span>
+      <span class="toggle-lbl">ON — bg <code style="font-size:11px;color:#22c55e">#22c55e</code>, border <code style="font-size:11px;color:#1fa34c">#1fa34c</code>, thumb <code style="font-size:11px;color:var(--accent2)">#ffffff</code></span>
     </div>
   </div>
 
@@ -386,6 +386,11 @@
         <div class="grad-hex">#2e0a40 → #110619</div>
       </div>
       <div class="grad-row">
+        <div class="grad-label">Title Bar</div>
+        <div class="swatch-grad" style="background:linear-gradient(135deg,#28083c,#1a0528)"></div>
+        <div class="grad-hex">#28083c → #1a0528</div>
+      </div>
+      <div class="grad-row">
         <div class="grad-label">START Button</div>
         <div class="swatch-grad" style="background:linear-gradient(135deg,#7c3aed,#a855f7)"></div>
         <div class="grad-hex">#7c3aed → #a855f7</div>
@@ -422,8 +427,10 @@
       <div class="swatch-grid">
         <div class="swatch-row"><div class="swatch" style="background:#1e0830"></div><span class="swatch-token">circle-btn</span><span class="swatch-hex">#1e0830</span><span class="swatch-desc">Info / Rotate / Menu button bg</span></div>
         <div class="swatch-row"><div class="swatch" style="background:#2e1244"></div><span class="swatch-token">circle-hover</span><span class="swatch-hex">#2e1244</span><span class="swatch-desc">Circle button hover</span></div>
-        <div class="swatch-row"><div class="swatch" style="background:#3a3a4a"></div><span class="swatch-token">toggle-off</span><span class="swatch-hex">#3a3a4a</span><span class="swatch-desc">Toggle OFF background</span></div>
-        <div class="swatch-row"><div class="swatch" style="background:#55556a"></div><span class="swatch-token">toggle-border</span><span class="swatch-hex">#55556a</span><span class="swatch-desc">Toggle OFF border</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#3a3a4a"></div><span class="swatch-token">toggle-off-bg</span><span class="swatch-hex">#3a3a4a</span><span class="swatch-desc">Toggle OFF background</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#55556a"></div><span class="swatch-token">toggle-off-border</span><span class="swatch-hex">#55556a</span><span class="swatch-desc">Toggle OFF border</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#22c55e"></div><span class="swatch-token">toggle-on-bg</span><span class="swatch-hex">#22c55e</span><span class="swatch-desc">Toggle ON background</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#1fa34c"></div><span class="swatch-token">toggle-on-border</span><span class="swatch-hex">#1fa34c</span><span class="swatch-desc">Toggle ON border</span></div>
         <div class="swatch-row"><div class="swatch" style="background:#0b1735;opacity:.85"></div><span class="swatch-token">fruit-cell</span><span class="swatch-hex">#0b1735aa</span><span class="swatch-desc">Fruit cell background</span></div>
         <div class="swatch-row"><div class="swatch" style="background:#7a60a0"></div><span class="swatch-token">fair-muted</span><span class="swatch-hex">#7a60a0</span><span class="swatch-desc">Provably fair row muted text</span></div>
         <div class="swatch-row"><div class="swatch" style="background:#ff79c6"></div><span class="swatch-token">cashout-glow</span><span class="swatch-hex">#ff79c6</span><span class="swatch-desc">Cashout overlay glow text</span></div>
@@ -482,6 +489,7 @@
     <h2>Included Assets</h2>
     <div class="asset-list">
       <div class="asset-item"><span class="asset-icon">🎮</span><span class="asset-path">index.html</span><span style="color:var(--muted);font-size:11px;margin-left:auto">Self-contained game file</span></div>
+      <div class="asset-item" style="background:transparent;border-color:transparent;color:var(--muted);font-family:'Montserrat',sans-serif;font-size:11px">Fruit SVGs are embedded inline in the game JS — these files are source assets, not loaded at runtime</div>
       <div class="asset-item"><span class="asset-icon">🍒</span><span class="asset-path">fruitsSVG/01-cherries.svg</span></div>
       <div class="asset-item"><span class="asset-icon">🍇</span><span class="asset-path">fruitsSVG/02-grapes.svg</span></div>
       <div class="asset-item"><span class="asset-icon">🍉</span><span class="asset-path">fruitsSVG/watermelon-remake.svg</span></div>
