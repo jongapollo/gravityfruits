@@ -48,7 +48,7 @@ Gravity Fruits is a crash/combo mini game where fruits fall from the top of the 
 
 ```
 ┌─────────────────────────────────────────┐
-│  🍉 GRAVITY FRUITS               [ i ]  │  ← Title bar
+│  [⌂]  🍉 GRAVITY FRUITS   [↩]   [ i ]  │  ← Title bar
 ├─────────────────────────────────────────┤
 │  MULT 1.00×    COMBO 0 (+0.00×)         │  ← HUD strip
 │ ┌───────────────────────────────────────┐│
@@ -74,7 +74,7 @@ Gravity Fruits is a crash/combo mini game where fruits fall from the top of the 
 | START | Full-width, `font-size:36px`, `padding:28px 72px` | Purple gradient, no border |
 | CASH OUT | Full-width, same as START | Green gradient, no border, text `#052e12` |
 | Adjuster (− / +) | 120 × 120 px circle, `font-size:72px` | `#1e0830` bg, 5px `--line` border |
-| Info / Rotate / Menu | 74 × 74 px circle | `#1e0830` bg, 5px `--line` border |
+| Home / Replay / Info / Rotate / Menu | 74 × 74 px circle | `#1e0830` bg, 5px `--line` border |
 
 ---
 
@@ -84,7 +84,7 @@ When the device rotates to landscape, the canvas switches to **1672 × 910 px**.
 
 ```
 ┌──────────────────────────┬──────────────────────┐
-│                          │  🍉 GRAVITY FRUITS [i]│  ← Title bar
+│                          │  [⌂] GRAVITY FRUITS [↩][i]│  ← Title bar
 │   MULT 1.00×  COMBO 0    │──────────────────────│  ← HUD pills (right panel)
 │ ┌────────────────────┐   │  [ − ]  $ 10  [ + ]  │
 │ │                    │   │  ══════●══════════    │  ← Controls (flex: 1)
@@ -119,7 +119,7 @@ The `.ls-hud` row is a duplicate of the portrait HUD pills — the original HUD 
 | START | Full-width, `font-size:32px`, `padding:36px` | Same purple gradient |
 | CASH OUT | Full-width, same as START | Same green gradient |
 | Adjuster (− / +) | 82 × 82 px circle, `font-size:52px` | Same style |
-| Info / Rotate / Menu | 56 × 56 px circle | Same style |
+| Home / Replay / Info / Rotate / Menu | 56 × 56 px circle | Same style |
 | MULT / COMBO pills | `flex:1` each, fills row equally | `font-size:20px` |
 
 ---
@@ -218,6 +218,7 @@ fruitsSVG/              — source SVG files (embedded inline in game JS, not lo
   06-plum.svg
   07-mystery-box.svg
 uiSVG/
+  home.svg
   info.svg
   close.svg
   replay.svg
