@@ -141,18 +141,10 @@ Labels on LEFT, toggle on RIGHT. Toggle OFF: bg `#3a3a4a`, border `#55556a`. Tog
 
 | Token | Hex | Usage |
 |-------|-----|-------|
-| `--bg` | `#110619` | Main canvas background |
-| `--panel` | `#1c0a2a` | Panel / card surfaces |
-| `--panel2` | `#14061e` | Secondary panel depth |
 | `--line` | `#6d28a0` | All borders (5px interactive, 3px arena) |
 | `--text` | `#ffffff` | Primary body text |
 | `--label` | `#fff9cd` | Warm cream — all labels, pill text |
-| `--muted` | `#9070b0` | Secondary / de-emphasised text |
 | `--gold` | `#f5c518` | MULT value, BALANCE value |
-| `--gold2` | `#ffe97a` | Lighter gold highlight |
-| `--good` | `#22c55e` | Success / CASH OUT button base |
-| `--bad` | `#ef4444` | Error state |
-| `--warn` | `#f59e0b` | Warning state |
 | `--accent` | `#a855f7` | Accent purple — START button, slider fill |
 | `--accent2` | `#c084fc` | Lighter accent purple — COMBO pill value |
 
