@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gravity Fruits — Developer Handoff</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#110619;
+    --panel:#1c0a2a;
+    --panel2:#14061e;
+    --line:#6d28a0;
+    --text:#ffffff;
+    --label:#fff9cd;
+    --muted:#9070b0;
+    --gold:#f5c518;
+    --gold2:#ffe97a;
+    --good:#22c55e;
+    --bad:#ef4444;
+    --warn:#f59e0b;
+    --accent:#a855f7;
+    --accent2:#c084fc;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:#080010;
+    color:var(--text);
+    font-family:'Montserrat',sans-serif;
+    font-size:15px;
+    line-height:1.6;
+    padding:48px 24px 80px;
+  }
+  .page{max-width:860px;margin:0 auto}
+
+  /* Hero */
+  .hero{
+    background:radial-gradient(ellipse 140% 80% at 50% -10%,#2e0a40,#110619);
+    border:3px solid var(--line);
+    border-radius:24px;
+    padding:48px 40px 40px;
+    margin-bottom:40px;
+    text-align:center;
+  }
+  .hero-title{
+    font-size:42px;font-weight:900;
+    background:linear-gradient(135deg,var(--accent2),var(--gold));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px;
+  }
+  .hero-sub{font-size:14px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
+  .badge-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:24px}
+  .badge{
+    background:var(--panel);border:2px solid var(--line);border-radius:40px;
+    padding:6px 18px;font-size:12px;font-weight:800;color:var(--label);
+    letter-spacing:.08em;text-transform:uppercase;
+  }
+
+  /* Section */
+  .section{margin-bottom:40px}
+  h2{
+    font-size:11px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--accent2);margin-bottom:16px;padding-bottom:8px;
+    border-bottom:1px solid var(--line);
+  }
+  h3{font-size:14px;font-weight:800;color:var(--label);margin:24px 0 12px;letter-spacing:.06em;text-transform:uppercase}
+
+  /* Card */
+  .card{
+    background:var(--panel);border:2px solid var(--line);border-radius:16px;
+    padding:24px 28px;margin-bottom:16px;
+  }
+  .desc{color:var(--label);font-size:14px;font-weight:700;margin-bottom:16px}
+
+  /* Steps */
+  .steps{list-style:none;display:flex;flex-direction:column;gap:10px}
+  .steps li{
+    display:flex;align-items:flex-start;gap:14px;font-size:13px;color:var(--text);font-weight:700;
+  }
+  .step-num{
+    min-width:28px;height:28px;border-radius:50%;background:var(--accent);
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:900;color:#fff;flex-shrink:0;margin-top:1px;
+  }
+  .step-txt{padding-top:4px}
+  .step-txt strong{color:var(--gold)}
+
+  /* Table */
+  .tbl{width:100%;border-collapse:collapse;font-size:13px}
+  .tbl th{
+    font-size:10px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);padding:6px 12px;text-align:left;border-bottom:1px solid var(--line);
+  }
+  .tbl td{padding:10px 12px;border-bottom:1px solid #2a0a3a;font-weight:700;vertical-align:middle}
+  .tbl tr:last-child td{border-bottom:none}
+  .tbl .mono{font-family:monospace;font-size:12px;background:var(--panel2);padding:2px 6px;border-radius:4px;color:var(--accent2)}
+  .tbl .tag{color:var(--label)}
+  .tbl .dim{color:var(--muted);font-size:12px}
+
+  /* Color swatch rows */
+  .swatch-grid{display:flex;flex-direction:column;gap:2px}
+  .swatch-row{
+    display:grid;grid-template-columns:44px 1fr 1fr 2fr;
+    align-items:center;gap:16px;padding:8px 12px;border-radius:8px;
+  }
+  .swatch-row:hover{background:rgba(255,255,255,.03)}
+  .swatch{width:44px;height:44px;border-radius:10px;border:2px solid rgba(255,255,255,.12);flex-shrink:0}
+  .swatch-token{font-family:monospace;font-size:12px;color:var(--accent2);font-weight:700}
+  .swatch-hex{font-family:monospace;font-size:13px;color:var(--text);font-weight:800}
+  .swatch-desc{font-size:12px;color:var(--muted);font-weight:700}
+
+  /* Gradient swatch */
+  .swatch-grad{
+    width:100%;height:44px;border-radius:10px;border:2px solid rgba(255,255,255,.12);margin-bottom:6px;
+  }
+  .grad-label{font-size:12px;color:var(--muted);font-weight:700;margin-bottom:4px}
+  .grad-hex{font-family:monospace;font-size:11px;color:var(--accent2);font-weight:700}
+  .grad-row{margin-bottom:16px}
+
+  /* Gradient grid */
+  .grad-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:600px){.grad-grid{grid-template-columns:1fr}}
+
+  /* Typography block */
+  .type-demo{
+    background:var(--panel2);border:1px solid var(--line);border-radius:12px;
+    padding:20px 24px;margin-bottom:12px;
+  }
+  .type-demo .sample{font-family:'Montserrat',sans-serif;font-size:28px;font-weight:900;
+    text-transform:uppercase;letter-spacing:.04em;color:var(--text);margin-bottom:4px}
+  .type-demo .sample.gold{color:var(--gold)}
+  .type-demo .sample.accent{color:var(--accent2)}
+  .type-demo .type-meta{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+
+  /* Shape demo */
+  .shape-row{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-top:12px}
+  .shape-chip{
+    border:3px solid var(--line);background:var(--panel);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 20px;
+    font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.08em;gap:4px;
+  }
+  .shape-chip span{font-size:18px;color:var(--accent2);font-weight:900}
+
+  /* Layout diagram */
+  .layout-diagram{
+    background:var(--panel2);border:2px solid var(--line);border-radius:16px;
+    overflow:hidden;font-size:12px;font-weight:800;color:var(--label);
+  }
+  .ld-row{
+    padding:12px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;
+  }
+  .ld-row:last-child{border-bottom:none}
+  .ld-num{
+    min-width:24px;height:24px;border-radius:50%;background:var(--accent);
+    font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;
+  }
+  .ld-label{color:var(--text)}
+  .ld-sub{color:var(--muted);font-size:11px;margin-top:2px}
+  .ld-arena{
+    min-height:80px;background:linear-gradient(180deg,#09132a,#070e20);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    border-bottom:1px solid var(--line);
+  }
+
+  /* Button demos */
+  .btn-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px}
+  .demo-btn{
+    border:none;border-radius:60px;font-family:'Montserrat',sans-serif;
+    font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;
+    padding:18px 40px;cursor:default;
+  }
+  .demo-btn.start{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;box-shadow:0 8px 40px #7c3aed55}
+  .demo-btn.cashout{background:linear-gradient(135deg,#15803d,#22c55e);color:#052e12;box-shadow:0 8px 36px #22c55e40}
+  .demo-btn.ghost{background:var(--panel);border:3px solid var(--line);color:var(--label)}
+
+  /* Toggle demo */
+  .toggle-demo{display:flex;align-items:center;gap:16px;margin-top:12px}
+  .toggle-pill{width:124px;height:68px;border-radius:60px;position:relative;flex-shrink:0;transition:background .2s}
+  .toggle-pill.off{background:#3a3a4a;border:3px solid #55556a}
+  .toggle-pill.on{background:#22c55e;border:3px solid #1fa34c}
+  .toggle-thumb{
+    width:58px;height:58px;border-radius:50%;background:#fff;
+    position:absolute;top:2px;transition:left .2s;box-shadow:0 2px 8px #0006;
+  }
+  .toggle-pill.off .toggle-thumb{left:3px}
+  .toggle-pill.on .toggle-thumb{left:60px}
+  .toggle-lbl{font-size:14px;font-weight:800;color:var(--text)}
+
+  /* Asset list */
+  .asset-list{display:flex;flex-direction:column;gap:6px}
+  .asset-item{
+    display:flex;align-items:center;gap:12px;
+    background:var(--panel2);border:1px solid #2a0a3a;border-radius:8px;
+    padding:10px 14px;font-family:monospace;font-size:12px;color:var(--accent2);font-weight:700;
+  }
+  .asset-icon{font-size:18px}
+  .asset-path{color:var(--label)}
+
+  /* Footer */
+  footer{text-align:center;padding-top:40px;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-title">Gravity Fruits</div>
+    <div class="hero-sub">Developer Handoff · Apollo Games · May 2026</div>
+    <div class="badge-row">
+      <span class="badge">HTML5</span>
+      <span class="badge">Browser Game</span>
+      <span class="badge">Portrait Mobile</span>
+      <span class="badge">Canvas 910 × 1672 px</span>
+    </div>
+  </div>
+
+  <!-- GAME DESCRIPTION -->
+  <div class="section">
+    <h2>Game Description</h2>
+    <div class="card">
+      <p class="desc">Gravity Fruits is a crash/combo mini game where fruits fall from the top of the arena into columns. A multiplier climbs in real time — cash out to bank your winnings or ride it until the game crashes.</p>
+      <ol class="steps">
+        <li><span class="step-num">1</span><span class="step-txt">Player sets a bet via preset buttons or manual adjuster</span></li>
+        <li><span class="step-num">2</span><span class="step-txt">Tap <strong>START</strong> — fruits fall, multiplier climbs</span></li>
+        <li><span class="step-num">3</span><span class="step-txt">Tap <strong>CASH OUT</strong> to bank <strong>bet × current multiplier</strong></span></li>
+        <li><span class="step-num">4</span><span class="step-txt">Game can crash at any moment — pays nothing on crash</span></li>
+        <li><span class="step-num">5</span><span class="step-txt"><strong>START</strong> after result auto-resets and starts a new round</span></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SYMBOLS -->
+  <div class="section">
+    <h2>Symbols &amp; Assets</h2>
+    <table class="tbl card" style="padding:0;overflow:hidden">
+      <thead>
+        <tr><th>#</th><th>Symbol</th><th>Asset File</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="tag">1</td><td>Cherries</td><td class="mono">fruitsSVG/01-cherries.svg</td><td class="dim">—</td></tr>
+        <tr><td class="tag">2</td><td>Grapes</td><td class="mono">fruitsSVG/02-grapes.svg</td><td class="dim">—</td></tr>
+        <tr><td class="tag">3</td><td>Watermelon</td><td class="mono">fruitsSVG/watermelon-remake.svg</td><td class="dim">Tight viewBox="-22 -12 424 286"</td></tr>
+        <tr><td class="tag">4</td><td>Lemon</td><td class="mono">fruitsSVG/04-lemon.svg</td><td class="dim">—</td></tr>
+        <tr><td class="tag">5</td><td>Orange</td><td class="mono">fruitsSVG/05-orange.svg</td><td class="dim">—</td></tr>
+        <tr><td class="tag">6</td><td>Plum</td><td class="mono">fruitsSVG/06-plum.svg</td><td class="dim">—</td></tr>
+        <tr><td class="tag">7</td><td>Mystery Box</td><td class="mono">fruitsSVG/07-mystery-box.svg</td><td class="dim">Special loot drop only</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Mystery Box Outcomes</h3>
+    <table class="tbl card" style="padding:0;overflow:hidden">
+      <thead><tr><th>Outcome</th><th>Weight</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">mult</td><td style="color:var(--gold);font-weight:900">45%</td><td class="dim">Random ×2–×20 multiplier applied to current mult</td></tr>
+        <tr><td class="mono">reveal3</td><td style="color:var(--gold);font-weight:900">30%</td><td class="dim">Reveals all fruit values for 3 seconds</td></tr>
+        <tr><td class="mono">freeze</td><td style="color:var(--gold);font-weight:900">25%</td><td class="dim">Locks current multiplier as guaranteed minimum payout</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- LAYOUT -->
+  <div class="section">
+    <h2>UI Layout</h2>
+    <div class="layout-diagram">
+      <div class="ld-row"><span class="ld-num">1</span><div><div class="ld-label">Title Bar</div><div class="ld-sub">Info button (circle, left)</div></div></div>
+      <div class="ld-arena">Game Arena (flex: 1) — HUD strip + falling fruits</div>
+      <div class="ld-row"><span class="ld-num">3</span><div><div class="ld-label">Controls Panel</div><div class="ld-sub">Preset row (½ / 2× / MAX) · Adjuster row (− / $amt / +) · START · CASH OUT · BALANCE</div></div></div>
+      <div class="ld-row"><span class="ld-num">4</span><div><div class="ld-label">Provably Fair Row</div><div class="ld-sub">Rotate button · SEED pill · CLIENT pill · Menu button</div></div></div>
+    </div>
+
+    <h3>Button Demos</h3>
+    <div class="btn-row">
+      <button class="demo-btn start">Start</button>
+      <button class="demo-btn cashout">Cash Out</button>
+      <button class="demo-btn ghost">½</button>
+      <button class="demo-btn ghost">2×</button>
+      <button class="demo-btn ghost">Max</button>
+    </div>
+
+    <h3>Settings Toggles</h3>
+    <div class="toggle-demo">
+      <div class="toggle-pill off"><div class="toggle-thumb"></div></div>
+      <span class="toggle-lbl">OFF — bg <code style="font-size:11px;color:var(--accent2)">#3a3a4a</code>, border <code style="font-size:11px;color:var(--accent2)">#55556a</code></span>
+    </div>
+    <div class="toggle-demo" style="margin-top:10px">
+      <div class="toggle-pill on"><div class="toggle-thumb"></div></div>
+      <span class="toggle-lbl">ON — bg <code style="font-size:11px;color:var(--good)">#22c55e</code>, thumb <code style="font-size:11px;color:var(--accent2)">#ffffff</code></span>
+    </div>
+  </div>
+
+  <!-- COLOR TOKENS -->
+  <div class="section">
+    <h2>Color Palette — CSS Tokens</h2>
+    <div class="card">
+      <div class="swatch-grid">
+        <div class="swatch-row"><div class="swatch" style="background:#110619"></div><span class="swatch-token">--bg</span><span class="swatch-hex">#110619</span><span class="swatch-desc">Main canvas background</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#1c0a2a"></div><span class="swatch-token">--panel</span><span class="swatch-hex">#1c0a2a</span><span class="swatch-desc">Panel / card surfaces</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#14061e"></div><span class="swatch-token">--panel2</span><span class="swatch-hex">#14061e</span><span class="swatch-desc">Secondary panel depth</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#6d28a0"></div><span class="swatch-token">--line</span><span class="swatch-hex">#6d28a0</span><span class="swatch-desc">All borders — 5px interactive, 3px arena</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#ffffff"></div><span class="swatch-token">--text</span><span class="swatch-hex">#ffffff</span><span class="swatch-desc">Primary body text</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#fff9cd"></div><span class="swatch-token">--label</span><span class="swatch-hex">#fff9cd</span><span class="swatch-desc">Warm cream — labels, pill text</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#9070b0"></div><span class="swatch-token">--muted</span><span class="swatch-hex">#9070b0</span><span class="swatch-desc">Secondary / de-emphasised text</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#f5c518"></div><span class="swatch-token">--gold</span><span class="swatch-hex">#f5c518</span><span class="swatch-desc">MULT value, BALANCE value</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#ffe97a"></div><span class="swatch-token">--gold2</span><span class="swatch-hex">#ffe97a</span><span class="swatch-desc">Lighter gold highlight</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#22c55e"></div><span class="swatch-token">--good</span><span class="swatch-hex">#22c55e</span><span class="swatch-desc">Success / CASH OUT button base</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#ef4444"></div><span class="swatch-token">--bad</span><span class="swatch-hex">#ef4444</span><span class="swatch-desc">Error state</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#f59e0b"></div><span class="swatch-token">--warn</span><span class="swatch-hex">#f59e0b</span><span class="swatch-desc">Warning state</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#a855f7"></div><span class="swatch-token">--accent</span><span class="swatch-hex">#a855f7</span><span class="swatch-desc">Accent purple — START, slider fill</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#c084fc"></div><span class="swatch-token">--accent2</span><span class="swatch-hex">#c084fc</span><span class="swatch-desc">Lighter accent — COMBO pill value</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTEXTUAL COLORS -->
+  <div class="section">
+    <h2>Contextual Colors</h2>
+    <div class="grad-grid">
+      <div class="grad-row">
+        <div class="grad-label">Body Background</div>
+        <div class="swatch-grad" style="background:#080010"></div>
+        <div class="grad-hex">#080010</div>
+      </div>
+      <div class="grad-row">
+        <div class="grad-label">Canvas Background</div>
+        <div class="swatch-grad" style="background:radial-gradient(ellipse 140% 80% at 50% -10%,#2e0a40,#110619)"></div>
+        <div class="grad-hex">#2e0a40 → #110619</div>
+      </div>
+      <div class="grad-row">
+        <div class="grad-label">START Button</div>
+        <div class="swatch-grad" style="background:linear-gradient(135deg,#7c3aed,#a855f7)"></div>
+        <div class="grad-hex">#7c3aed → #a855f7</div>
+      </div>
+      <div class="grad-row">
+        <div class="grad-label">START Button Hover</div>
+        <div class="swatch-grad" style="background:linear-gradient(135deg,#8b5cf6,#c084fc)"></div>
+        <div class="grad-hex">#8b5cf6 → #c084fc</div>
+      </div>
+      <div class="grad-row">
+        <div class="grad-label">CASH OUT Button</div>
+        <div class="swatch-grad" style="background:linear-gradient(135deg,#15803d,#22c55e)"></div>
+        <div class="grad-hex">#15803d → #22c55e · text #052e12</div>
+      </div>
+      <div class="grad-row">
+        <div class="grad-label">CASH OUT Hover</div>
+        <div class="swatch-grad" style="background:linear-gradient(135deg,#16a34a,#4ade80)"></div>
+        <div class="grad-hex">#16a34a → #4ade80</div>
+      </div>
+      <div class="grad-row">
+        <div class="grad-label">Controls Panel</div>
+        <div class="swatch-grad" style="background:linear-gradient(180deg,#1e0a2c,#130720)"></div>
+        <div class="grad-hex">#1e0a2c → #130720</div>
+      </div>
+      <div class="grad-row">
+        <div class="grad-label">Arena Inner</div>
+        <div class="swatch-grad" style="background:linear-gradient(180deg,#09132a,#070e20)"></div>
+        <div class="grad-hex">#09132a → #070e20</div>
+      </div>
+    </div>
+
+    <h3>Solid Contextual</h3>
+    <div class="card">
+      <div class="swatch-grid">
+        <div class="swatch-row"><div class="swatch" style="background:#1e0830"></div><span class="swatch-token">circle-btn</span><span class="swatch-hex">#1e0830</span><span class="swatch-desc">Info / Rotate / Menu button bg</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#2e1244"></div><span class="swatch-token">circle-hover</span><span class="swatch-hex">#2e1244</span><span class="swatch-desc">Circle button hover</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#3a3a4a"></div><span class="swatch-token">toggle-off</span><span class="swatch-hex">#3a3a4a</span><span class="swatch-desc">Toggle OFF background</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#55556a"></div><span class="swatch-token">toggle-border</span><span class="swatch-hex">#55556a</span><span class="swatch-desc">Toggle OFF border</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#0b1735;opacity:.85"></div><span class="swatch-token">fruit-cell</span><span class="swatch-hex">#0b1735aa</span><span class="swatch-desc">Fruit cell background</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#7a60a0"></div><span class="swatch-token">fair-muted</span><span class="swatch-hex">#7a60a0</span><span class="swatch-desc">Provably fair row muted text</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#ff79c6"></div><span class="swatch-token">cashout-glow</span><span class="swatch-hex">#ff79c6</span><span class="swatch-desc">Cashout overlay glow text</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#052e12"></div><span class="swatch-token">cashout-text</span><span class="swatch-hex">#052e12</span><span class="swatch-desc">CASH OUT button label color</span></div>
+      </div>
+    </div>
+
+    <h3>Hint States</h3>
+    <div class="card">
+      <div class="swatch-grid">
+        <div class="swatch-row"><div class="swatch" style="background:rgba(16,185,129,.12);border-color:rgba(34,197,94,.35)"></div><span class="swatch-token">hint-ok</span><span class="swatch-hex" style="color:#b7f7d5">#b7f7d5</span><span class="swatch-desc">text · bg rgba(16,185,129,.12)</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.35)"></div><span class="swatch-token">hint-bad</span><span class="swatch-hex" style="color:#fecaca">#fecaca</span><span class="swatch-desc">text · bg rgba(239,68,68,.12)</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.35)"></div><span class="swatch-token">hint-warn</span><span class="swatch-hex" style="color:#fde68a">#fde68a</span><span class="swatch-desc">text · bg rgba(245,158,11,.12)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TYPOGRAPHY -->
+  <div class="section">
+    <h2>Typography</h2>
+    <div class="type-demo">
+      <div class="sample">Montserrat 900</div>
+      <div class="type-meta">All UI text · weights 700 / 800 / 900 · text-transform: uppercase · letter-spacing</div>
+    </div>
+    <div class="type-demo">
+      <div class="sample gold">×14.5</div>
+      <div class="type-meta">MULT / BALANCE values → --gold (#f5c518)</div>
+    </div>
+    <div class="type-demo">
+      <div class="sample accent">Combo ×3</div>
+      <div class="type-meta">COMBO pill value → --accent2 (#c084fc)</div>
+    </div>
+    <div class="type-demo" style="background:linear-gradient(135deg,#1e0a2c,#110618)">
+      <div class="sample" style="font-family:'Pacifico',cursive;font-weight:400;color:#ff79c6;text-shadow:0 0 16px #ff79c6;text-transform:none">Wawaweewa!</div>
+      <div class="type-meta">Cashout overlay only → Pacifico Regular · glow #ff79c6</div>
+    </div>
+  </div>
+
+  <!-- SHAPE LANGUAGE -->
+  <div class="section">
+    <h2>Shape Language</h2>
+    <div class="card">
+      <p class="desc">All interactive borders are 5px. Arena wrapper border is 3px solid <code style="color:var(--accent2)">--line</code>.</p>
+      <div class="shape-row">
+        <div class="shape-chip" style="border-radius:48px"><span>48px</span>Title bar / overlays</div>
+        <div class="shape-chip" style="border-radius:44px"><span>44px</span>Arena wrapper</div>
+        <div class="shape-chip" style="border-radius:52px"><span>52px</span>Controls panel</div>
+        <div class="shape-chip" style="border-radius:60px"><span>60px</span>Buttons / pills</div>
+        <div class="shape-chip" style="border-radius:50%;width:74px;height:74px;justify-content:center"><span>74px</span>Circle btns</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ASSETS -->
+  <div class="section">
+    <h2>Included Assets</h2>
+    <div class="asset-list">
+      <div class="asset-item"><span class="asset-icon">🎮</span><span class="asset-path">index.html</span><span style="color:var(--muted);font-size:11px;margin-left:auto">Self-contained game file</span></div>
+      <div class="asset-item"><span class="asset-icon">🍒</span><span class="asset-path">fruitsSVG/01-cherries.svg</span></div>
+      <div class="asset-item"><span class="asset-icon">🍇</span><span class="asset-path">fruitsSVG/02-grapes.svg</span></div>
+      <div class="asset-item"><span class="asset-icon">🍉</span><span class="asset-path">fruitsSVG/watermelon-remake.svg</span></div>
+      <div class="asset-item"><span class="asset-icon">🍋</span><span class="asset-path">fruitsSVG/04-lemon.svg</span></div>
+      <div class="asset-item"><span class="asset-icon">🍊</span><span class="asset-path">fruitsSVG/05-orange.svg</span></div>
+      <div class="asset-item"><span class="asset-icon">🍑</span><span class="asset-path">fruitsSVG/06-plum.svg</span></div>
+      <div class="asset-item"><span class="asset-icon">📦</span><span class="asset-path">fruitsSVG/07-mystery-box.svg</span></div>
+      <div class="asset-item"><span class="asset-icon">ℹ️</span><span class="asset-path">uiSVG/info.svg</span></div>
+      <div class="asset-item"><span class="asset-icon">✕</span><span class="asset-path">uiSVG/close.svg</span></div>
+      <div class="asset-item"><span class="asset-icon">↻</span><span class="asset-path">uiSVG/replay.svg</span></div>
+      <div class="asset-item"><span class="asset-icon">☰</span><span class="asset-path">uiSVG/menu.svg</span></div>
+    </div>
+  </div>
+
+  <footer>Gravity Fruits · Apollo Games · Developer Handoff · May 2026</footer>
+</div>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+</body>
+</html>

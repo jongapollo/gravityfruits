@@ -38,8 +38,9 @@
     height:1672px;
     flex-shrink:0;
     padding:24px;
-    display:flex;
-    flex-direction:column;
+    display:grid;
+    grid-template-rows:auto 1fr auto auto;
+    grid-template-areas:"titlebar" "arena" "controls" "fairrow";
     gap:16px;
     overflow:hidden;
     position:relative;
@@ -51,6 +52,7 @@
 
   /* ── Title bar ── */
   .titlebar{
+    grid-area:titlebar;
     display:flex;
     align-items:center;
     padding:16px 28px;
@@ -82,11 +84,11 @@
 
   /* ── Arena wrapper ── */
   .arena-wrap{
+    grid-area:arena;
     border-radius:44px;
     overflow:hidden;
     border:3px solid var(--line);
     box-shadow:0 0 80px #2a0a4055, inset 0 0 120px #08001a60;
-    flex:1;
     min-height:0;
     display:flex;
     flex-direction:column;
@@ -134,6 +136,7 @@
 
   /* ── Control panel ── */
   .controls{
+    grid-area:controls;
     background:linear-gradient(180deg,#1e0a2c 0%,#130720 100%);
     border:5px solid var(--line);
     border-radius:52px;
@@ -308,6 +311,7 @@
 
   /* ── Provably fair ── */
   .fair-row{
+    grid-area:fairrow;
     display:flex;
     flex-direction:row;
     gap:12px;
@@ -561,6 +565,62 @@
     position:absolute; width:12px; height:12px;
     border-radius:4px; pointer-events:none;
   }
+  /* ── Landscape orientation ───────────────────────── */
+  /* Landscape-only HUD row (hidden in portrait) */
+  .ls-hud{
+    display:none;
+    grid-area:lshud;
+  }
+  .wrap.landscape .ls-hud{
+    display:flex;
+    gap:10px;
+    align-items:center;
+  }
+  .wrap.landscape .ls-hud .pill{ flex:1; justify-content:center; }
+  .wrap.landscape .hud{ display:none; }
+
+  .wrap.landscape{
+    width:1672px;
+    height:910px;
+    grid-template-columns:1fr 540px;
+    grid-template-rows:auto auto 1fr auto;
+    grid-template-areas:
+      "arena titlebar"
+      "arena lshud"
+      "arena controls"
+      "arena fairrow";
+    padding:20px;
+    gap:20px;
+  }
+  .wrap.landscape .arena-wrap{ min-width:0; }
+  /* Title bar */
+  .wrap.landscape .titlebar{ padding:12px 22px; align-items:center; }
+  .wrap.landscape .titlebar h1{ font-size:30px; }
+  /* Controls */
+  .wrap.landscape .controls{ padding:16px 22px; gap:12px; overflow-y:auto; }
+  .wrap.landscape .bet-section{ gap:10px; }
+  .wrap.landscape .btn-circle-adj{ width:82px; height:82px; font-size:52px; }
+  .wrap.landscape .bet-currency{ font-size:24px; }
+  .wrap.landscape .bet-value{ font-size:34px; }
+  .wrap.landscape .bet-slider-wrap{ padding:32px 8px 2px; }
+  .wrap.landscape .action-row{ flex:1; justify-content:center; gap:14px; }
+  .wrap.landscape .btn-start,
+  .wrap.landscape .btn-cash{ padding:36px 36px; font-size:32px; }
+  /* Pills */
+  .wrap.landscape .pill{ font-size:20px; padding:7px 16px; }
+  .wrap.landscape .pill.p-bal b{ font-size:30px; }
+  /* Fair row */
+  .wrap.landscape .fair-row{ padding:10px 14px; gap:8px; }
+  .wrap.landscape .fair-pill{ font-size:17px; padding:7px 12px; gap:6px; }
+  .wrap.landscape .fair-mono{ font-size:17px; }
+  .wrap.landscape input.fair-input{ font-size:17px; width:90px; }
+  /* Circle buttons */
+  .wrap.landscape .btn-rotate,
+  .wrap.landscape .btn-info{ width:56px !important; height:56px !important; }
+  .wrap.landscape .btn-rotate svg{ width:34px; height:34px; }
+  .wrap.landscape #menuBtn svg{ width:46px; height:46px; }
+  .wrap.landscape .btn-info svg{ width:28px; height:28px; }
+
   @keyframes arena-shake{
     0%  { transform:translateX(0); }
     15% { transform:translateX(-10px); }
@@ -644,6 +704,12 @@
     <button id="menuBtn" class="btn-ghost btn-rotate" aria-label="Settings"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill-rule="evenodd" d="M22.09,22.65h19.82c1.14,0,2.07.93,2.07,2.07v.03c0,1.14-.93,2.07-2.07,2.07h-19.82c-1.14,0-2.07-.93-2.07-2.07v-.03c0-1.14.93-2.07,2.07-2.07ZM22.09,30.15h19.82c1.14,0,2.07.93,2.07,2.07h0c0,1.14-.93,2.07-2.07,2.07h-19.82c-1.14,0-2.07-.93-2.07-2.07h0c0-1.14.93-2.07,2.07-2.07ZM22.09,37.21h19.82c1.14,0,2.07.93,2.07,2.07h0c0,1.14-.93,2.07-2.07,2.07h-19.82c-1.14,0-2.07-.93-2.07-2.07h0c0-1.14.93-2.07,2.07-2.07Z"/></svg></button>
   </div>
 
+
+  <!-- Landscape HUD pills (hidden in portrait, shown in right panel in landscape) -->
+  <div class="ls-hud">
+    <div class="pill p-mult">Mult <b id="multShowLs">1.00×</b></div>
+    <div class="pill p-combo">Combo <b id="comboShowLs">0 (+0.00×)</b></div>
+  </div>
 
   <!-- Settings overlay -->
   <div id="menuOverlay" class="info-overlay hidden">
@@ -822,11 +888,15 @@ function showHint(text, cls='ok', ms=1100){
 }
 function setStatus(s){ status=s; }
 function syncHUD(){
-  document.getElementById('bal').textContent      = fmt(balance);
-  document.getElementById('multShow').textContent = mult.toFixed(2)+'×';
-  const bonus = Math.min(combo*COMBO_STEP, COMBO_CAP);
-  document.getElementById('comboShow').textContent = `${combo} (+${bonus.toFixed(2)}×)`;
-  document.getElementById('seedHash').textContent = serverHash;
+  const multTxt  = mult.toFixed(2)+'×';
+  const bonus    = Math.min(combo*COMBO_STEP, COMBO_CAP);
+  const comboTxt = `${combo} (+${bonus.toFixed(2)}×)`;
+  document.getElementById('bal').textContent         = fmt(balance);
+  document.getElementById('multShow').textContent    = multTxt;
+  document.getElementById('multShowLs').textContent  = multTxt;
+  document.getElementById('comboShow').textContent   = comboTxt;
+  document.getElementById('comboShowLs').textContent = comboTxt;
+  document.getElementById('seedHash').textContent    = serverHash;
 }
 
 /* ------------------ Spawning ------------------ */
@@ -1090,10 +1160,15 @@ sha256hex(serverSeed).then(h=>{ serverHash=h; syncHUD(); });
 syncHUD();
 syncBetInput();
 
-/* Scale canvas to fit window */
+/* Scale canvas to fit window, switch layout on orientation change */
 function scaleGame(){
-  const s = Math.min(window.innerWidth/910, window.innerHeight/1672);
-  document.querySelector('.wrap').style.transform = `scale(${s})`;
+  const isLandscape = window.innerWidth > window.innerHeight;
+  const wrap = document.querySelector('.wrap');
+  wrap.classList.toggle('landscape', isLandscape);
+  const cw = isLandscape ? 1672 : 910;
+  const ch = isLandscape ? 910 : 1672;
+  const s = Math.min(window.innerWidth/cw, window.innerHeight/ch);
+  wrap.style.transform = `scale(${s})`;
 }
 window.addEventListener('resize', scaleGame);
 scaleGame();
