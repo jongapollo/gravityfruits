@@ -304,12 +304,8 @@
     <h2>UI Layout — Landscape</h2>
     <div class="card" style="padding:0;overflow:hidden;margin-bottom:16px">
       <div style="display:grid;grid-template-columns:1fr 200px;min-height:220px">
-        <!-- Left: Arena -->
+        <!-- Left: Arena (HUD strip hidden in landscape — pills move to right panel) -->
         <div style="background:linear-gradient(180deg,#09132a,#070e20);display:flex;flex-direction:column;border-right:2px solid var(--line)">
-          <div style="padding:10px 14px;background:linear-gradient(180deg,#200a30,#180622);border-bottom:1px solid var(--line);display:flex;gap:8px">
-            <span style="background:#000;border:2px solid var(--line);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:800;color:var(--gold)">MULT 1.00×</span>
-            <span style="background:#000;border:2px solid var(--line);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:800;color:var(--accent2)">COMBO 0</span>
-          </div>
           <div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase">Arena (1fr)</div>
         </div>
         <!-- Right: Controls sidebar -->
@@ -414,6 +410,16 @@
         <div class="grad-label">Controls Panel</div>
         <div class="swatch-grad" style="background:linear-gradient(180deg,#1e0a2c,#130720)"></div>
         <div class="grad-hex">#1e0a2c → #130720</div>
+      </div>
+      <div class="grad-row">
+        <div class="grad-label">HUD Strip</div>
+        <div class="swatch-grad" style="background:linear-gradient(180deg,#200a30,#180622)"></div>
+        <div class="grad-hex">#200a30 → #180622</div>
+      </div>
+      <div class="grad-row">
+        <div class="grad-label">Info / Settings Sheet</div>
+        <div class="swatch-grad" style="background:linear-gradient(180deg,#1e0a2c,#110618)"></div>
+        <div class="grad-hex">#1e0a2c → #110618</div>
       </div>
       <div class="grad-row">
         <div class="grad-label">Arena Inner</div>

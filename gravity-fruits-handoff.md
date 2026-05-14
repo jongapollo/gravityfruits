@@ -156,6 +156,7 @@ Labels on LEFT, toggle on RIGHT. Toggle OFF: bg `#3a3a4a`, border `#55556a`. Tog
 | Canvas background | `radial-gradient(ellipse at top, #2e0a40 → #110619)` |
 | Title bar gradient | `#28083c → #1a0528` |
 | HUD strip gradient | `#200a30 → #180622` |
+| Info / Settings sheet | `#1e0a2c → #110618` |
 | Controls panel gradient | `#1e0a2c → #130720` |
 | Arena inner gradient | `#09132a → #070e20` |
 | Circle button bg | `#1e0830` |
