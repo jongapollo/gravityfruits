@@ -87,17 +87,6 @@
     flex-direction:column;
   }
 
-  /* HUD strip sits on top of arena */
-  .hud{
-    display:flex;
-    gap:10px;
-    align-items:center;
-    padding:14px 20px;
-    background:linear-gradient(180deg,#200a30,#180622);
-    border-bottom:2px solid var(--line);
-    flex-shrink:0;
-    min-width:0;
-  }
   .pill{
     display:inline-flex;
     align-items:center;
@@ -116,15 +105,19 @@
   .pill.p-mult b{ color:var(--gold); text-shadow:0 0 14px #f5c51840; }
   .pill.p-status b{ color:var(--text); }
 
-  /* Multiplier history */
-  .mult-history{
+  /* Multiplier history — floats over arena */
+  .mult-history-overlay{
+    position:absolute;
+    top:14px;
+    left:14px;
+    right:14px;
     display:flex;
     flex-direction:row-reverse;
     gap:6px;
     align-items:center;
-    flex:1;
-    min-width:0;
     overflow:hidden;
+    pointer-events:none;
+    z-index:20;
   }
   .mh-chip{
     font-size:26px;
@@ -613,27 +606,13 @@
     border-radius:4px; pointer-events:none;
   }
   /* ── Landscape orientation ───────────────────────── */
-  /* Landscape-only HUD row (hidden in portrait) */
-  .ls-hud{
-    display:none;
-    grid-area:lshud;
-  }
-  .wrap.landscape .ls-hud{
-    display:flex;
-    gap:10px;
-    align-items:center;
-  }
-  .wrap.landscape .ls-hud .pill{ align-self:flex-start; }
-  .wrap.landscape .hud{ display:none; }
-
   .wrap.landscape{
     width:1672px;
     height:910px;
     grid-template-columns:1fr 540px;
-    grid-template-rows:auto auto 1fr auto;
+    grid-template-rows:auto 1fr auto;
     grid-template-areas:
       "arena titlebar"
-      "arena lshud"
       "arena controls"
       "arena fairrow";
     padding:20px;
@@ -695,12 +674,10 @@
     </button>
   </div>
 
-  <!-- Arena + HUD -->
+  <!-- Arena -->
   <div class="arena-wrap">
-    <div class="hud">
-      <div id="multHistory" class="mult-history"></div>
-    </div>
     <div id="arena">
+      <div id="multHistory" class="mult-history-overlay"></div>
       <div id="wawa" class="wawa">Wawaweewa!<small>Cashed out</small></div>
       <div id="hint" class="hint"></div>
     </div>
@@ -750,11 +727,6 @@
     <button id="menuBtn" class="btn-ghost btn-rotate" aria-label="Settings"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill-rule="evenodd" d="M22.09,22.65h19.82c1.14,0,2.07.93,2.07,2.07v.03c0,1.14-.93,2.07-2.07,2.07h-19.82c-1.14,0-2.07-.93-2.07-2.07v-.03c0-1.14.93-2.07,2.07-2.07ZM22.09,30.15h19.82c1.14,0,2.07.93,2.07,2.07h0c0,1.14-.93,2.07-2.07,2.07h-19.82c-1.14,0-2.07-.93-2.07-2.07h0c0-1.14.93-2.07,2.07-2.07ZM22.09,37.21h19.82c1.14,0,2.07.93,2.07,2.07h0c0,1.14-.93,2.07-2.07,2.07h-19.82c-1.14,0-2.07-.93-2.07-2.07h0c0-1.14.93-2.07,2.07-2.07Z"/></svg></button>
   </div>
 
-
-  <!-- Landscape HUD pills (hidden in portrait, shown in right panel in landscape) -->
-  <div class="ls-hud">
-    <div id="multHistoryLs" class="mult-history"></div>
-  </div>
 
   <!-- Settings overlay -->
   <div id="menuOverlay" class="info-overlay hidden">
@@ -954,8 +926,7 @@ function renderHistory(){
       return `<span class="mh-chip ${cls}">${h.value.toFixed(2)}×</span>`;
     })
     .join('');
-  document.getElementById('multHistory').innerHTML   = html;
-  document.getElementById('multHistoryLs').innerHTML = html;
+  document.getElementById('multHistory').innerHTML = html;
 }
 function pushHistory(value, type){
   multHistory.push({value, type});
