@@ -248,6 +248,12 @@
     gap:16px;
   }
   .action-sub .btn-cash{ flex:1; min-width:unset; }
+  .cash-mult{
+    font-size:1em;
+    font-weight:900;
+    color:#052e12;
+    opacity:0.75;
+  }
   .btn-action{
     border:0;
     border-radius:60px;
@@ -692,7 +698,6 @@
   <!-- Arena + HUD -->
   <div class="arena-wrap">
     <div class="hud">
-      <div class="pill p-mult">Mult <b id="multShow">1.00×</b></div>
       <div id="multHistory" class="mult-history"></div>
     </div>
     <div id="arena">
@@ -725,7 +730,7 @@
         <button id="start" class="btn-action btn-start" aria-label="Start round">Start</button>
       </div>
       <div class="action-sub">
-        <button id="cash" class="btn-action btn-cash" disabled aria-label="Cash out">Cash Out</button>
+        <button id="cash" class="btn-action btn-cash" disabled aria-label="Cash out">Cash Out <b id="multShow" class="cash-mult">1.00×</b></button>
       </div>
     </div>
 
@@ -748,7 +753,6 @@
 
   <!-- Landscape HUD pills (hidden in portrait, shown in right panel in landscape) -->
   <div class="ls-hud">
-    <div class="pill p-mult">Mult <b id="multShowLs">1.00×</b></div>
     <div id="multHistoryLs" class="mult-history"></div>
   </div>
 
@@ -940,7 +944,6 @@ function syncHUD(){
   const multTxt = mult.toFixed(2)+'×';
   document.getElementById('bal').textContent        = fmt(balance);
   document.getElementById('multShow').textContent   = multTxt;
-  document.getElementById('multShowLs').textContent = multTxt;
   document.getElementById('seedHash').textContent   = serverHash;
 }
 function renderHistory(){
