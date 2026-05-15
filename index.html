@@ -88,16 +88,6 @@
   }
 
   /* HUD strip sits on top of arena */
-  .hud{
-    display:flex;
-    gap:10px;
-    align-items:center;
-    padding:14px 20px;
-    background:linear-gradient(180deg,#200a30,#180622);
-    border-bottom:2px solid var(--line);
-    flex-shrink:0;
-    min-width:0;
-  }
   .pill{
     display:inline-flex;
     align-items:center;
@@ -116,15 +106,42 @@
   .pill.p-mult b{ color:var(--gold); text-shadow:0 0 14px #f5c51840; }
   .pill.p-status b{ color:var(--text); }
 
-  /* Multiplier history */
+  /* MULT arena overlay */
+  .mult-arena-overlay{
+    position:absolute;
+    top:16px;
+    left:16px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 22px;
+    border-radius:40px;
+    border:3px solid var(--line);
+    background:rgba(0,0,0,.55);
+    backdrop-filter:blur(4px);
+    font-size:28px;
+    color:var(--label);
+    white-space:nowrap;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    z-index:20;
+    pointer-events:none;
+  }
+  .mult-arena-overlay b{ color:var(--gold); font-weight:800; text-shadow:0 0 14px #f5c51840; }
+
+  /* Multiplier history — bottom arena overlay */
   .mult-history{
+    position:absolute;
+    bottom:16px;
+    left:16px;
+    right:16px;
     display:flex;
     flex-direction:row-reverse;
     gap:6px;
     align-items:center;
-    flex:1;
-    min-width:0;
     overflow:hidden;
+    pointer-events:none;
+    z-index:20;
   }
   .mh-chip{
     font-size:26px;
@@ -657,11 +674,9 @@
 
   <!-- Arena + HUD -->
   <div class="arena-wrap">
-    <div class="hud">
-      <div class="pill p-mult">Mult <b id="multShow">1.00×</b></div>
-      <div id="multHistory" class="mult-history"></div>
-    </div>
     <div id="arena">
+      <div class="mult-arena-overlay">Mult <b id="multShow">1.00×</b></div>
+      <div id="multHistory" class="mult-history"></div>
       <div id="wawa" class="wawa">Wawaweewa!<small>Cashed out</small></div>
       <div id="hint" class="hint"></div>
     </div>
