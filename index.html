@@ -607,27 +607,13 @@
     border-radius:4px; pointer-events:none;
   }
   /* ── Landscape orientation ───────────────────────── */
-  /* Landscape-only HUD row (hidden in portrait) */
-  .ls-hud{
-    display:none;
-    grid-area:lshud;
-  }
-  .wrap.landscape .ls-hud{
-    display:flex;
-    gap:10px;
-    align-items:center;
-  }
-  .wrap.landscape .ls-hud .pill{ align-self:flex-start; }
-  .wrap.landscape .hud{ display:none; }
-
   .wrap.landscape{
     width:1672px;
     height:910px;
     grid-template-columns:1fr 540px;
-    grid-template-rows:auto auto 1fr auto;
+    grid-template-rows:auto 1fr auto;
     grid-template-areas:
       "arena titlebar"
-      "arena lshud"
       "arena controls"
       "arena fairrow";
     padding:20px;
@@ -745,12 +731,6 @@
     <button id="menuBtn" class="btn-ghost btn-rotate" aria-label="Settings"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill-rule="evenodd" d="M22.09,22.65h19.82c1.14,0,2.07.93,2.07,2.07v.03c0,1.14-.93,2.07-2.07,2.07h-19.82c-1.14,0-2.07-.93-2.07-2.07v-.03c0-1.14.93-2.07,2.07-2.07ZM22.09,30.15h19.82c1.14,0,2.07.93,2.07,2.07h0c0,1.14-.93,2.07-2.07,2.07h-19.82c-1.14,0-2.07-.93-2.07-2.07h0c0-1.14.93-2.07,2.07-2.07ZM22.09,37.21h19.82c1.14,0,2.07.93,2.07,2.07h0c0,1.14-.93,2.07-2.07,2.07h-19.82c-1.14,0-2.07-.93-2.07-2.07h0c0-1.14.93-2.07,2.07-2.07Z"/></svg></button>
   </div>
 
-
-  <!-- Landscape HUD pills (hidden in portrait, shown in right panel in landscape) -->
-  <div class="ls-hud">
-    <div class="pill p-mult">Mult <b id="multShowLs">1.00×</b></div>
-    <div id="multHistoryLs" class="mult-history"></div>
-  </div>
 
   <!-- Settings overlay -->
   <div id="menuOverlay" class="info-overlay hidden">
@@ -940,7 +920,6 @@ function syncHUD(){
   const multTxt = mult.toFixed(2)+'×';
   document.getElementById('bal').textContent        = fmt(balance);
   document.getElementById('multShow').textContent   = multTxt;
-  document.getElementById('multShowLs').textContent = multTxt;
   document.getElementById('seedHash').textContent   = serverHash;
 }
 function renderHistory(){
@@ -952,7 +931,6 @@ function renderHistory(){
     })
     .join('');
   document.getElementById('multHistory').innerHTML   = html;
-  document.getElementById('multHistoryLs').innerHTML = html;
 }
 function pushHistory(value, type){
   multHistory.push({value, type});
