@@ -248,6 +248,7 @@
     gap:16px;
   }
   .action-sub .btn-cash{ flex:1; min-width:unset; }
+  .cash-credit{ font-size:1em; font-weight:900; color:#052e12; opacity:0.75; }
   .btn-action{
     border:0;
     border-radius:60px;
@@ -392,6 +393,7 @@
   }
   .btn-rotate svg{ width:58px; height:58px; fill:var(--label); display:block; }
   #menuBtn svg{ width:72px; height:72px; }
+  #rotateSeed svg{ fill:none; stroke:var(--label); stroke-width:5; stroke-linecap:round; stroke-linejoin:round; }
 
   /* ── Info button ── */
   .btn-info{
@@ -523,29 +525,6 @@
   .toggle-btn.on{ background:#22c55e; border-color:#1fa34c; }
   .toggle-btn.on::after{ left:62px; }
 
-  .menu-bottom-bar{
-    display:flex;
-    justify-content:center;
-    gap:48px;
-    padding:32px 0 12px;
-    border-top:2px solid var(--line);
-    margin-top:16px;
-  }
-  .menu-bottom-item{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:14px;
-  }
-  .menu-bottom-label{
-    font-size:24px;
-    font-weight:700;
-    color:var(--label);
-    text-transform:uppercase;
-    letter-spacing:.05em;
-  }
-  .menu-bottom-item .btn-info{ width:111px; height:111px; }
-  .menu-bottom-item .btn-info svg{ width:66px; height:66px; }
 
   /* ── In-arena objects ── */
   .fruit,.loot{
@@ -648,8 +627,6 @@
   .wrap.landscape .btn-rotate svg{ width:40px; height:40px; }
   .wrap.landscape #menuBtn svg{ width:52px; height:52px; }
   .wrap.landscape .btn-info svg{ width:28px; height:28px; }
-  .wrap.landscape .menu-bottom-item .btn-info{ width:111px !important; height:111px !important; }
-  .wrap.landscape .menu-bottom-item .btn-info svg{ width:66px; height:66px; }
 
   @keyframes arena-shake{
     0%  { transform:translateX(0); }
@@ -669,6 +646,7 @@
 
   <!-- Title bar -->
   <div class="titlebar">
+    <button id="homeBtn" class="btn-info" aria-label="Home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M36.35,49.74v-.45c0-3.54,0-7.08,0-10.62,0-1.5-.93-2.44-2.43-2.44-1.41,0-2.81,0-4.22,0-1.38,0-2.35.97-2.35,2.34,0,3.56,0,7.13,0,10.69v.47h-.38c-2.07,0-4.15,0-6.22,0-1.45,0-2.39-.95-2.39-2.4,0-4.3,0-8.61,0-12.91v-.45c-.72,0-1.41,0-2.1,0-.98.01-1.75-.36-2.18-1.26-.44-.93-.27-1.8.4-2.58.24-.28.49-.54.74-.8,4.75-4.75,9.5-9.5,14.25-14.25.29-.29.58-.58.9-.84.92-.75,2.04-.74,2.97,0,.32.26.61.55.9.84,1.35,1.34,2.69,2.68,4.03,4.03.09.09.18.17.33.32,0-.43,0-.78,0-1.14,0-1.38.97-2.34,2.35-2.34.71,0,1.43,0,2.14,0,1.26.01,2.25.99,2.25,2.26,0,2.54,0,5.09,0,7.63,0,.26.08.43.26.61.99.98,1.98,1.96,2.96,2.96.32.33.64.66.9,1.03.51.74.54,1.54.13,2.33-.41.79-1.1,1.16-1.97,1.18-.74.01-1.47,0-2.26,0v.42c0,4.29,0,8.58,0,12.87,0,1.54-.93,2.46-2.48,2.46-2.16,0-4.31,0-6.52,0Z"/></svg></button>
     <h1>🍉 GRAVITY FRUITS</h1>
     <button id="infoBtn" class="btn-info" aria-label="Game info">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="22 17 20 30"><path d="M35.99,24.4c0,2.09-1.79,3.79-3.99,3.79s-3.99-1.7-3.99-3.79,1.79-3.79,3.99-3.79,3.99,1.7,3.99,3.79ZM35.08,43.39h-6.08c-.3,0-.55-.24-.55-.54v-12.07c0-.29.24-.53.53-.53h6.08c.3,0,.55.24.55.54v12.07c0,.29-.24.53-.53.53Z"/></svg>
@@ -711,7 +689,7 @@
         <button id="start" class="btn-action btn-start" aria-label="Start round">Start</button>
       </div>
       <div class="action-sub">
-        <button id="cash" class="btn-action btn-cash" disabled aria-label="Cash out">Cash Out</button>
+        <button id="cash" class="btn-action btn-cash" disabled aria-label="Cash out">Cash Out <b id="cashCredit" class="cash-credit">$10</b></button>
       </div>
     </div>
 
@@ -724,10 +702,11 @@
 
   <!-- Provably fair — single compact row -->
   <div class="fair-row">
-    <button id="rotateSeed" class="btn-ghost btn-rotate" aria-label="Rotate seed"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M32.93,11.98c-7.13.05-13.38,3.82-16.89,9.48l-4.21-4.21c-.34-.34-.92-.1-.92.38v13.36c0,.3.24.54.54.54h13.36c.48,0,.72-.58.38-.92l-5.3-5.3c2.44-4.79,7.42-8.08,13.17-8.08,8.09,0,14.73,6.58,14.79,14.67.06,8.21-6.58,14.89-14.78,14.89-6.41,0-11.87-4.09-13.92-9.8-.08-.21-.28-.35-.5-.35h-4.37c-.36,0-.61.34-.52.68,2.33,8.48,10.09,14.71,19.31,14.71,11.06,0,20.02-8.97,20.02-20.02,0-11.08-9.07-20.1-20.16-20.02Z"/></svg></button>
+    <button id="rotateSeed" class="btn-ghost btn-rotate" aria-label="Shuffle seed"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M8,44 C22,44 26,20 44,20 M37,13 L44,20 L37,27"/><path d="M8,20 C22,20 26,44 44,44 M37,37 L44,44 L37,51"/></svg></button>
     <div class="fair-pill fair-pill-hash">
       Seed <span id="seedHash" class="fair-mono">—</span>
     </div>
+    <button id="replayBtn" class="btn-ghost btn-rotate" aria-label="Replay last round"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M32.93,11.98c-7.13.05-13.38,3.82-16.89,9.48l-4.21-4.21c-.34-.34-.92-.1-.92.38v13.36c0,.3.24.54.54.54h13.36c.48,0,.72-.58.38-.92l-5.3-5.3c2.44-4.79,7.42-8.08,13.17-8.08,8.09,0,14.73,6.58,14.79,14.67.06,8.21-6.58,14.89-14.78,14.89-6.41,0-11.87-4.09-13.92-9.8-.08-.21-.28-.35-.5-.35h-4.37c-.36,0-.61.34-.52.68,2.33,8.48,10.09,14.71,19.31,14.71,11.06,0,20.02-8.97,20.02-20.02,0-11.08-9.07-20.1-20.16-20.02ZM28.13,24.51v15.53c0,.26.28.41.5.28l12.92-7.77c.21-.13.21-.44,0-.56l-12.92-7.77c-.22-.13-.5.03-.5.28Z"/></svg></button>
     <button id="menuBtn" class="btn-ghost btn-rotate" aria-label="Settings"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill-rule="evenodd" d="M22.09,22.65h19.82c1.14,0,2.07.93,2.07,2.07v.03c0,1.14-.93,2.07-2.07,2.07h-19.82c-1.14,0-2.07-.93-2.07-2.07v-.03c0-1.14.93-2.07,2.07-2.07ZM22.09,30.15h19.82c1.14,0,2.07.93,2.07,2.07h0c0,1.14-.93,2.07-2.07,2.07h-19.82c-1.14,0-2.07-.93-2.07-2.07h0c0-1.14.93-2.07,2.07-2.07ZM22.09,37.21h19.82c1.14,0,2.07.93,2.07,2.07h0c0,1.14-.93,2.07-2.07,2.07h-19.82c-1.14,0-2.07-.93-2.07-2.07h0c0-1.14.93-2.07,2.07-2.07Z"/></svg></button>
   </div>
 
@@ -748,20 +727,6 @@
         <div class="toggle-row">
           <span class="toggle-label">Reduce Motion</span>
           <button id="toggleMotion" class="toggle-btn" aria-label="Reduce Motion" aria-pressed="false"></button>
-        </div>
-      </div>
-      <div class="menu-bottom-bar">
-        <div class="menu-bottom-item">
-          <button id="homeBtn" class="btn-info" aria-label="Home">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M36.35,49.74v-.45c0-3.54,0-7.08,0-10.62,0-1.5-.93-2.44-2.43-2.44-1.41,0-2.81,0-4.22,0-1.38,0-2.35.97-2.35,2.34,0,3.56,0,7.13,0,10.69v.47h-.38c-2.07,0-4.15,0-6.22,0-1.45,0-2.39-.95-2.39-2.4,0-4.3,0-8.61,0-12.91v-.45c-.72,0-1.41,0-2.1,0-.98.01-1.75-.36-2.18-1.26-.44-.93-.27-1.8.4-2.58.24-.28.49-.54.74-.8,4.75-4.75,9.5-9.5,14.25-14.25.29-.29.58-.58.9-.84.92-.75,2.04-.74,2.97,0,.32.26.61.55.9.84,1.35,1.34,2.69,2.68,4.03,4.03.09.09.18.17.33.32,0-.43,0-.78,0-1.14,0-1.38.97-2.34,2.35-2.34.71,0,1.43,0,2.14,0,1.26.01,2.25.99,2.25,2.26,0,2.54,0,5.09,0,7.63,0,.26.08.43.26.61.99.98,1.98,1.96,2.96,2.96.32.33.64.66.9,1.03.51.74.54,1.54.13,2.33-.41.79-1.1,1.16-1.97,1.18-.74.01-1.47,0-2.26,0v.42c0,4.29,0,8.58,0,12.87,0,1.54-.93,2.46-2.48,2.46-2.16,0-4.31,0-6.52,0Z"/></svg>
-          </button>
-          <span class="menu-bottom-label">Home</span>
-        </div>
-        <div class="menu-bottom-item">
-          <button id="replayBtn" class="btn-info" aria-label="Replay last round">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M32.93,11.98c-7.13.05-13.38,3.82-16.89,9.48l-4.21-4.21c-.34-.34-.92-.1-.92.38v13.36c0,.3.24.54.54.54h13.36c.48,0,.72-.58.38-.92l-5.3-5.3c2.44-4.79,7.42-8.08,13.17-8.08,8.09,0,14.73,6.58,14.79,14.67.06,8.21-6.58,14.89-14.78,14.89-6.41,0-11.87-4.09-13.92-9.8-.08-.21-.28-.35-.5-.35h-4.37c-.36,0-.61.34-.52.68,2.33,8.48,10.09,14.71,19.31,14.71,11.06,0,20.02-8.97,20.02-20.02,0-11.08-9.07-20.1-20.16-20.02ZM28.13,24.51v15.53c0,.26.28.41.5.28l12.92-7.77c.21-.13.21-.44,0-.56l-12.92-7.77c-.22-.13-.5.03-.5.28Z"/></svg>
-          </button>
-          <span class="menu-bottom-label">Replay</span>
         </div>
       </div>
     </div>
@@ -920,6 +885,7 @@ function syncHUD(){
   const multTxt = mult.toFixed(2)+'×';
   document.getElementById('bal').textContent        = fmt(balance);
   document.getElementById('multShow').textContent   = multTxt;
+  document.getElementById('cashCredit').textContent = fmt(Math.floor(bet * mult));
   document.getElementById('seedHash').textContent   = serverHash;
 }
 function renderHistory(){
@@ -1171,6 +1137,7 @@ function syncBetInput(){
   const sl = document.getElementById('betSlider');
   sl.value = pct;
   sl.style.setProperty('--fill', pct+'%');
+  syncHUD();
 }
 document.getElementById('betMinus').addEventListener('click', ()=>{
   const step = Math.max(1, Math.round(bet * 0.1));
