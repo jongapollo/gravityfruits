@@ -204,7 +204,7 @@
   .bet-currency{ font-size:38px; font-weight:900; color:var(--text); }
   .bet-value{ font-size:52px; font-weight:900; color:var(--text); }
   /* Bet slider */
-  .bet-slider-wrap{ padding:24px 8px 10px; }
+  .bet-slider-wrap{ padding:18px 8px 16px; }
   input[type=range].bet-slider{
     -webkit-appearance:none;
     appearance:none;
@@ -243,17 +243,18 @@
     flex-direction:column;
     gap:16px;
   }
-  .start-row{ display:flex; gap:16px; }
-  .start-row .btn-start{ flex:1; }
-  .action-sub{
+  .action-row .btn-action{
+    width:100%;
+    height:160px;
     display:flex;
-    gap:16px;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
   }
-  .action-sub .btn-cash{ flex:1; min-width:unset; }
-  .cash-credit{ font-size:1em; font-weight:900; color:#052e12; opacity:0.75; }
   .btn-action{
     border:0;
-    border-radius:60px;
+    border-radius:9999px;
     font-weight:900;
     font-family:'Montserrat',sans-serif;
     cursor:pointer;
@@ -611,10 +612,11 @@
   .wrap.landscape .btn-circle-adj{ width:82px; height:82px; font-size:52px; }
   .wrap.landscape .bet-currency{ font-size:24px; }
   .wrap.landscape .bet-value{ font-size:34px; }
-  .wrap.landscape .bet-slider-wrap{ padding:32px 8px 2px; }
-  .wrap.landscape .action-row{ flex:1; justify-content:center; gap:14px; }
+  .wrap.landscape .bet-slider-wrap{ padding:60px 8px 16px; }
+  .wrap.landscape .action-row{ flex:1; justify-content:center; gap:14px; align-items:stretch; }
   .wrap.landscape .btn-start,
-  .wrap.landscape .btn-cash{ padding:36px 36px; font-size:32px; }
+  .wrap.landscape .btn-cash{ padding:36px 36px; font-size:44px; }
+  .wrap.landscape .action-row .btn-action{ height:auto; flex:1; max-height:240px; border-radius:32px; gap:20px; }
   /* Pills */
   .wrap.landscape .pill{ font-size:20px; padding:7px 16px; }
   .wrap.landscape .pill.p-bal b{ font-size:30px; }
@@ -689,12 +691,7 @@
 
     <!-- Action row -->
     <div class="action-row">
-      <div class="start-row">
-        <button id="start" class="btn-action btn-start" aria-label="Start round">Start</button>
-      </div>
-      <div class="action-sub">
-        <button id="cash" class="btn-action btn-cash" disabled aria-label="Cash out">Cash Out <b id="cashCredit" class="cash-credit">$10</b></button>
-      </div>
+      <button id="actionBtn" class="btn-action btn-start" aria-label="Start round">Start</button>
     </div>
 
     <!-- Credit row -->
@@ -706,7 +703,6 @@
 
   <!-- Provably fair — single compact row -->
   <div class="fair-row">
-    <button id="rotateSeed" class="btn-ghost btn-rotate" aria-label="Shuffle seed"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M8,44 C22,44 26,20 44,20 M37,13 L44,20 L37,27"/><path d="M8,20 C22,20 26,44 44,44 M37,37 L44,44 L37,51"/></svg></button>
     <div class="fair-pill fair-pill-hash">
       Seed <span id="seedHash" class="fair-mono">—</span>
     </div>
@@ -846,6 +842,7 @@ const fmt = n=>'$'+Number(n).toLocaleString(undefined,{minimumFractionDigits:0,m
 
 let balance=1000, bet=10, status='idle';
 let mult=1.0, lockedMin=0;
+let beatTimer=null;
 let fruits=[];
 let multHistory=[];
 let rng=Math.random;
@@ -885,18 +882,31 @@ function showHint(text, cls='ok', ms=1100){
   setTimeout(()=>{ if(hint.textContent===full) hint.style.display='none'; }, ms);
 }
 function setStatus(s){ status=s; }
+function updateActionBtn(){
+  const btn = document.getElementById('actionBtn');
+  if(status === 'running'){
+    btn.className = 'btn-action btn-cash';
+    btn.setAttribute('aria-label','Cash out');
+    btn.innerHTML = `<span>Cash Out</span><span id="cashCredit" style="color:#ffffff">${fmt(Math.floor(bet*mult))}</span>`;
+  } else {
+    btn.className = 'btn-action btn-start';
+    btn.setAttribute('aria-label','Start round');
+    btn.innerHTML = 'Start';
+  }
+}
 function syncHUD(){
   const multTxt = mult.toFixed(2)+'×';
-  document.getElementById('bal').textContent        = fmt(balance);
-  document.getElementById('multShow').textContent   = multTxt;
-  document.getElementById('cashCredit').textContent = fmt(Math.floor(bet * mult));
-  document.getElementById('seedHash').textContent   = serverHash;
+  document.getElementById('bal').textContent      = fmt(balance);
+  document.getElementById('multShow').textContent = multTxt;
+  document.getElementById('seedHash').textContent = serverHash;
+  const cc = document.getElementById('cashCredit');
+  if(cc) cc.textContent = fmt(Math.floor(bet * mult));
 }
 function renderHistory(){
   const reversed = [...multHistory].reverse();
   const html = reversed
     .map((h,i)=>{
-      const cls = i===0 ? (h.type==='crash'?'mh-crash':'mh-cash') : 'mh-old';
+      const cls = h.type==='crash' ? 'mh-crash' : 'mh-cash';
       return `<span class="mh-chip ${cls}">${h.value.toFixed(2)}×</span>`;
     })
     .join('');
@@ -1047,6 +1057,7 @@ function crashRound(){
 /* ------------------ Round lifecycle ------------------ */
 function startRound(){
   if(status==='running') return;
+  clearTimeout(beatTimer);
   if(status!=='idle') resetGame();
   ensureAudio();
   bet = clamp(bet, 1, MAX_BET);
@@ -1060,7 +1071,7 @@ function startRound(){
   fruits.forEach(f=>{ if(f.elem) f.elem.remove(); if(f.peek) f.peek.remove(); });
   fruits=[]; spawnAcc=0; startTime=performance.now(); lastTime=startTime; wawa.style.display='none';
 
-  setStatus('running'); document.getElementById('cash').disabled=false; syncHUD(); loop();
+  setStatus('running'); updateActionBtn(); syncHUD(); loop();
 }
 function cashOut(){
   if(status!=='running') return;
@@ -1076,11 +1087,21 @@ function cashOut(){
   stop();
 }
 function resetGame(){
-  stop(); setStatus('idle'); mult=1.0; lockedMin=0; revealUntil=0;
+  stop(true); setStatus('idle'); mult=1.0; lockedMin=0; revealUntil=0;
   fruits.forEach(f=>{ if(f.elem) f.elem.remove(); if(f.peek) f.peek.remove(); });
   fruits=[]; wawa.style.display='none'; syncHUD();
 }
-function stop(){ if(raf){ cancelAnimationFrame(raf); raf=null; } document.getElementById('cash').disabled=true; syncHUD(); }
+function stop(skipBeat=false){
+  if(raf){ cancelAnimationFrame(raf); raf=null; }
+  if(skipBeat){
+    clearTimeout(beatTimer);
+    updateActionBtn();
+  } else {
+    clearTimeout(beatTimer);
+    beatTimer = setTimeout(()=>{ if(status!=='running') updateActionBtn(); }, 1200);
+  }
+  syncHUD();
+}
 
 /* ------------------ Main loop ------------------ */
 function loop(ts){
@@ -1100,12 +1121,9 @@ function loop(ts){
 }
 
 /* ------------------ UI wiring ------------------ */
-document.getElementById('start').addEventListener('click', ()=>{ ensureAudio(); startRound(); });
-document.getElementById('cash').addEventListener('click', cashOut);
-document.getElementById('rotateSeed').addEventListener('click', ()=>{
-  serverSeed = Math.random().toString(36).slice(2);
-  sha256hex(serverSeed).then(h=>{ serverHash=h; syncHUD(); });
-  nonce = 0;
+document.getElementById('actionBtn').addEventListener('click', ()=>{
+  ensureAudio();
+  if(status === 'running') cashOut(); else startRound();
 });
 
 /* Settings menu */
