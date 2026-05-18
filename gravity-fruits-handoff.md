@@ -18,7 +18,7 @@ Gravity Fruits is a crash/combo mini game where fruits fall from the top of the 
 2. Tap **START** — fruits fall, multiplier climbs
 3. Tap **CASH OUT** to bank `bet × current multiplier`, or ride it out
 4. Game can crash at any moment, paying nothing
-5. **START** after a result auto-resets and starts a new round
+5. After result, button resets to **START** after a 1.2s beat — tap to start a new round
 
 ---
 
@@ -48,9 +48,9 @@ Gravity Fruits is a crash/combo mini game where fruits fall from the top of the 
 
 ```
 ┌─────────────────────────────────────────┐
-│  [⌂]  🍉 GRAVITY FRUITS   [↩]   [ i ]  │  ← Title bar
+│  [⌂]  GRAVITY FRUITS            [ i ]  │  ← Title bar
 ├─────────────────────────────────────────┤
-│  MULT 1.00×    COMBO 0 (+0.00×)         │  ← HUD strip
+│  MULT 1.00×    [history chips]          │  ← HUD overlay (top of arena)
 │ ┌───────────────────────────────────────┐│
 │ │                                       ││
 │ │           ARENA (fruits fall)         ││  ← Game arena (flex: 1)
@@ -59,22 +59,33 @@ Gravity Fruits is a crash/combo mini game where fruits fall from the top of the 
 ├─────────────────────────────────────────┤
 │  [ − ]        $ 10        [ + ]         │  ← Bet adjuster
 │  ══════●══════════════════════          │  ← Bet slider
-│  [          START         ]             │  ← Primary action
-│  [         CASH OUT       ]             │  ← Secondary action
+│  [       START / CASH OUT      ]        │  ← Single merged action button
 │  BALANCE               $1,000          │  ← Credit row
 ├─────────────────────────────────────────┤
-│  [↻]   SEED abc123…   CLIENT player [☰] │  ← Provably fair row
+│  SEED abc123…   CLIENT player [↩] [ ☰] │  ← Provably fair row
 └─────────────────────────────────────────┘
 ```
 
-### Portrait Button Sizes
+### Action Button — States
+
+| Game state | Appearance | Click |
+|---|---|---|
+| `idle` | Purple gradient — **START** | Start round |
+| `running` | Green gradient — **CASH OUT** (line 1) / `$value` in white (line 2) | Cash out |
+| `cashed` / `crashed` | Stays green for 1.2s beat, then flips purple | Start new round |
+
+### Portrait Button & Element Sizes
 
 | Element | Size | Style |
 |---------|------|-------|
-| START | Full-width, `font-size:36px`, `padding:28px 72px` | Purple gradient, no border |
-| CASH OUT | Full-width, same as START | Green gradient, no border, text `#052e12` |
+| START / CASH OUT | Full-width, `height:160px`, `font-size:36px` | Pill `border-radius:9999px`; purple or green gradient |
 | Adjuster (− / +) | 120 × 120 px circle, `font-size:72px` | `#1e0830` bg, 5px `--line` border |
-| Home / Replay / Info / Rotate / Menu | 74 × 74 px circle | `#1e0830` bg, 5px `--line` border |
+| Home / Info | 74 × 74 px circle | `#1e0830` bg, 5px `--line` border |
+| Replay / Menu | 74 × 74 px circle | Same style |
+
+### Portrait Slider Spacing
+
+`bet-slider-wrap` padding: `18px 8px 16px` — thumb is equidistant (~14px) between the bet-pill and the action button.
 
 ---
 
@@ -84,15 +95,14 @@ When the device rotates to landscape, the canvas switches to **1672 × 910 px**.
 
 ```
 ┌──────────────────────────┬──────────────────────┐
-│                          │  [⌂] GRAVITY FRUITS [↩][i]│  ← Title bar
-│   MULT 1.00×  COMBO 0    │──────────────────────│  ← HUD pills (right panel)
+│                          │  [⌂] GRAVITY FRUITS [i]│  ← Title bar
+│   MULT 1.00×  [history]  │──────────────────────│
 │ ┌────────────────────┐   │  [ − ]  $ 10  [ + ]  │
-│ │                    │   │  ══════●══════════    │  ← Controls (flex: 1)
-│ │   ARENA            │   │  [      START      ]  │
-│ │  (fruits fall)     │   │  [    CASH OUT     ]  │
-│ │                    │   │  BALANCE    $1,000    │
+│ │                    │   │  ══════●══════════    │  ← Slider (centered between pill & button)
+│ │   ARENA            │   │  [      START      ]  │  ← Squarish button (fills panel)
+│ │  (fruits fall)     │   │  BALANCE    $1,000    │
 │ └────────────────────┘   │──────────────────────│
-│                          │  [↻] SEED  CLI  [☰]  │  ← Fair row
+│                          │  SEED  CLI  [↩] [☰]  │  ← Fair row
 └──────────────────────────┴──────────────────────┘
      ~65% width                  540px fixed
 ```
@@ -101,37 +111,56 @@ When the device rotates to landscape, the canvas switches to **1672 × 910 px**.
 
 ```
 grid-template-columns: 1fr 540px
-grid-template-rows:    auto auto 1fr auto
+grid-template-rows:    auto 1fr auto
 
 grid-template-areas:
   "arena  titlebar"
-  "arena  lshud"
   "arena  controls"
   "arena  fairrow"
 ```
-
-The `.ls-hud` row is a duplicate of the portrait HUD pills — the original HUD strip inside the arena is hidden (`display:none`) in landscape. Both sets stay in sync via JS.
 
 ### Landscape Button Sizes
 
 | Element | Size | Style |
 |---------|------|-------|
-| START | Full-width, `font-size:32px`, `padding:36px` | Same purple gradient |
-| CASH OUT | Full-width, same as START | Same green gradient |
+| START / CASH OUT | Full-width, `height:auto; flex:1; max-height:240px`, `font-size:44px` | Squarish `border-radius:32px`; purple or green gradient |
 | Adjuster (− / +) | 82 × 82 px circle, `font-size:52px` | Same style |
-| Home / Replay / Info / Rotate / Menu | 56 × 56 px circle | Same style |
-| MULT / COMBO pills | `flex:1` each, fills row equally | `font-size:20px` |
+| Home / Info | 56 × 56 px circle | Same style |
+
+### Landscape Slider Spacing
+
+`bet-slider-wrap` padding: `60px 8px 16px` — large top padding pushes thumb down to visual midpoint between pill and button, compensating for the `flex:1` space consumed by the action-row.
+
+---
+
+## History Chips (Multiplier History)
+
+Displayed in a row at the top of the arena next to the MULT pill.
+
+| Chip type | Class | Color |
+|-----------|-------|-------|
+| Cashed round | `mh-cash` | Green — `#4ade80` |
+| Crashed round | `mh-crash` | Red — `#f87171` |
+
+All chips use their own outcome colour (not just the most recent one).
 
 ---
 
 ## Settings Overlay
 
 Three iOS-style toggle switches (124 × 68 px pill, white thumb):
-- **Sound** — guards all SFX (`beep()`)
 - **Haptic Feedback** — guards `navigator.vibrate()`
 - **Reduce Motion** — disables arena-shake CSS animation on crash
 
 Labels on LEFT, toggle on RIGHT. Toggle OFF: bg `#3a3a4a`, border `#55556a`. Toggle ON: bg `#22c55e`.
+
+> Note: Sound toggle was removed (Sound is always on).
+
+---
+
+## Provably Fair Row
+
+Displays server seed hash. **No manual seed rotation button** — seed is generated server-side only and cannot be triggered by the player. Hash is still shown for verification.
 
 ---
 
@@ -155,8 +184,6 @@ Labels on LEFT, toggle on RIGHT. Toggle OFF: bg `#3a3a4a`, border `#55556a`. Tog
 | Body background | `#080010` |
 | Canvas background | `radial-gradient(ellipse at top, #2e0a40 → #110619)` |
 | Title bar gradient | `#28083c → #1a0528` |
-| HUD strip gradient | `#200a30 → #180622` |
-| Info / Settings sheet | `#1e0a2c → #110618` |
 | Controls panel gradient | `#1e0a2c → #130720` |
 | Arena inner gradient | `#09132a → #070e20` |
 | Circle button bg | `#1e0830` |
@@ -165,7 +192,8 @@ Labels on LEFT, toggle on RIGHT. Toggle OFF: bg `#3a3a4a`, border `#55556a`. Tog
 | START hover | `linear-gradient(135deg, #8b5cf6, #c084fc)` |
 | CASH OUT button | `linear-gradient(135deg, #15803d, #22c55e)` |
 | CASH OUT hover | `linear-gradient(135deg, #16a34a, #4ade80)` |
-| CASH OUT text | `#052e12` |
+| CASH OUT label text | `#052e12` |
+| CASH OUT price text | `#ffffff` |
 | Bet amount pill bg | `#000000` |
 | Toggle OFF bg / border | `#3a3a4a` / `#55556a` |
 | Toggle ON bg / border | `#22c55e` / `#1fa34c` |
@@ -177,6 +205,8 @@ Labels on LEFT, toggle on RIGHT. Toggle OFF: bg `#3a3a4a`, border `#55556a`. Tog
 | Hint — warn | text `#fde68a`, bg `rgba(245,158,11,.12)` |
 | Cashout glow text | `#ff79c6` |
 | Provably fair muted text | `#7a60a0` |
+| History chip — cash | `#4ade80` on `rgba(34,197,94,.15)` |
+| History chip — crash | `#f87171` on `rgba(239,68,68,.15)` |
 
 ---
 
@@ -199,7 +229,9 @@ Labels on LEFT, toggle on RIGHT. Toggle OFF: bg `#3a3a4a`, border `#55556a`. Tog
 - Title bar / sheet overlays: `48px`
 - Arena wrapper: `44px`
 - Controls panel: `52px`
-- All buttons, pills, inputs: `60px`
+- Action button portrait: `9999px` (full pill)
+- Action button landscape: `32px` (squarish)
+- All other buttons, pills, inputs: `60px`
 - All interactive borders: `5px solid --line`
 - Arena wrapper border: `3px solid --line`
 
